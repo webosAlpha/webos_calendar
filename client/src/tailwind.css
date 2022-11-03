@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+@layer base {
+}
+
+@layer components {
+}
+
+@layer utilities {
+  .calendar_days_SUN {
+    @apply text-red-500;
+  }
+
+  .calendar_days_SAT {
+    @apply text-blue-500;
+  }
+
+  .cell {
+    @apply w-11 h-11 flex items-center justify-center text-center hover:scale-110 cursor-pointer rounded-full;
+  }
+
+  .same_month {
+  }
+
+  .not_same_month {
+    @apply text-[#686868];
+  }
+
+  .today {
+    @apply bg-[#FFB80D]/90;
+  }
+
+  .selectedDate {
+    @apply bg-[#cf0652]/90;
+  }
+
+  .scheduleMarker_container {
+    @apply w-full absolute -bottom-6 h-6 flex justify-center items-center;
+  }
+
+  .scheduleMarker_num {
+    @apply bg-gray-300/20 text-white rounded-full text-xs h-fit w-fit px-0.5 flex justify-center items-center;
+  }
+
+  .scheduleMarker {
+    @apply h-2 w-2 rounded-full;
+  }
+
+  .sidebar_bg {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1) 100%,
+      rgba(0, 0, 0, 0.2) 70%,
+      rgba(0, 0, 0, 0.3) 25%,
+      rgba(0, 0, 0, 1) 0%
+    );
+
+    @apply -z-10 absolute top-0 h-full w-full;
+  }
+
+  .todoList_title{
+    @apply mt-4
+  }
+}
