@@ -20,6 +20,15 @@ const getSheetData = async (sheetName) => {
 	}
 };
 
+router.get("/plz", async (req, res) => {
+	try {
+	  const accounts = await Schedule.find();
+	  res.json(accounts);
+	} catch (err) {
+	  res.status(500).json({ message: err.message });
+	}
+});
+
 router.post("/insert", async (req, res) => {
 	try {
 		const obj = data.json.schedule;
