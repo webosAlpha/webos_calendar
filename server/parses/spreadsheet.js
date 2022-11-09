@@ -7,6 +7,7 @@ var schedule; //content
 var beforeSchedule = "";
 var startTime = ""; //starttime
 var endTime = ""; //endtime
+var location = "";
 var dayOfTheWeek = ""; //요일
 var day = "";
 var dataArr;
@@ -59,6 +60,7 @@ function parseSchedule(data) {
 				if (schedule != beforeSchedule) {
 					//새로운 스케줄
 					if (startTime != "") {
+						location = content.split(",");
 						makeJson();
 					}
 					beforeSchedule = schedule;
@@ -71,6 +73,7 @@ function parseSchedule(data) {
 			}
 		}
 	}
+	location = content.split(",");
 	makeJson();
 }
 
@@ -116,6 +119,7 @@ function makeJson() {
 	jsonSchedule.date = day;
 	jsonSchedule.startedTime = startTime;
 	jsonSchedule.endedTime = endTime;
+	jsonSchedule.location = location;
 	jsonSchedule.category = category;
 	jsonSchedule.scheduleNote = "비고";
 	const Test = new Schedule(jsonSchedule);
