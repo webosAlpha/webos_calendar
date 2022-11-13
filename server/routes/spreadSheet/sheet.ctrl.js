@@ -1,9 +1,13 @@
+const Sheet = require("../../schemas/sheet");
+const axios = require("axios");
+
 const GOOGLE_SHEET_ID = "1QWitMUG4_drX0EOBurg0t4u5ZgCOuGti3ySf6Txkzs4";
 var cnt = 0;
 var month;
 var week;
 var category;
-var schedule; //content
+var content; //content
+var contents;
 var beforeSchedule = "";
 var startTime = ""; //starttime
 var endTime = ""; //endtime
@@ -55,15 +59,16 @@ function parseSchedule(data) {
 				dataArr[i] != null &&
 				dataArr[i][Object.keys(dataArr[i])[0]] != null
 			) {
-				schedule = dataArr[i][Object.keys(dataArr[i])[0]]; //dataArr[i] 요일인덱스
+				contents = dataArr[i][Object.keys(dataArr[i])[0]]; //dataArr[i] 요일인덱스
+				content = contents.split(",")[0];
 
-				if (schedule != beforeSchedule) {
+				if (content != beforeSchedule) {
 					//새로운 스케줄
 					if (startTime != "") {
-						location = content.split(",");
+						location = contents.split(",")[1];
 						makeJson();
 					}
-					beforeSchedule = schedule;
+					beforeSchedule = content;
 					startTime = parseStartTime(dataArr);
 					endTime = parseEndTime(dataArr);
 				} else {
@@ -73,7 +78,7 @@ function parseSchedule(data) {
 			}
 		}
 	}
-	location = content.split(",");
+	location = content.split(",")[1];
 	makeJson();
 }
 
@@ -112,17 +117,18 @@ function makeJson() {
 		.format("DD");
 	var jsonSchedule = new Object();
 
+	jsonSchedule._id = "";
 	jsonSchedule.title = null;
-	(jsonSchedule.content = beforeSchedule), (jsonSchedule.year = "2022");
+	(jsonSchedule.content = beforeSchedule), (jsonSchedule.year = "2022");   //이거 왜이렇게 해두셨지?
 	jsonSchedule.month = month;
 	jsonSchedule.week = week;
-	jsonSchedule.date = day;
+	jsonSchedule.day = day;
 	jsonSchedule.startedTime = startTime;
 	jsonSchedule.endedTime = endTime;
 	jsonSchedule.location = location;
 	jsonSchedule.category = category;
 	jsonSchedule.scheduleNote = "비고";
-	const Test = new Schedule(jsonSchedule);
+	const Test = new Sheet(jsonSchedule);
 	Test.save(); // 테스트
 }
 
@@ -144,3 +150,24 @@ function dayConverter(dayOfWeek) {
 			return 6;
 	}
 }
+
+const getSheetData = async (sheetName) => {
+	try {
+		var { data } = await axios({
+			method: "get",
+			url: `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?sheet=${sheetName}`,
+		});
+		data = parseUrl(data);
+		monthWeekCate = data[0].split('{"c":')[1]; // 첫 행 파싱
+		parseMonthWeekCate(monthWeekCate);
+
+		parseSchedule(data);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// module.exports 를 통해 다른 파일에서 사용할 수 있음
+module.exports = {
+	getSheetData,
+};

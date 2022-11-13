@@ -22,4 +22,5 @@ module.exports = () => {
 	});
 
 	require("./schedule");
+	require("./sheet");
 };
