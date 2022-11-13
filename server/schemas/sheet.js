@@ -2,10 +2,9 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose; // 비구조 할당
 
-const scheduleSchema = new Schema({
+const sheetSchema = new Schema({
 	_id: {
 		type: Number,
-		required: true,
 	},
 	title: {
 		type: String,
@@ -23,9 +22,6 @@ const scheduleSchema = new Schema({
 		required: true,
 	},
 	week: {
-		type: String,
-	},
-	dayOfTheWeek: {
 		type: String,
 	},
 	day: {
@@ -52,4 +48,4 @@ const scheduleSchema = new Schema({
 	},
 });
 
-module.exports = mongoose.model("Schedule", scheduleSchema);
+module.exports = mongoose.model("Sheet", sheetSchema);
