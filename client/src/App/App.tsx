@@ -5,7 +5,7 @@ import SettingPanel from "../views/SettingPanel/SettingPanel";
 import { useRecoilState } from "recoil";
 import { pathState } from "../atoms/pathAtom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { useCallback } from "react";
+import {useCallback, useEffect} from "react";
 
 // @ts-ignore
 const RoutablePanels = Routable({ navigate: "navigate" }, Panels);
@@ -20,6 +20,10 @@ const App = (props: any) => {
     },
     [setPath]
   );
+
+  useEffect(()=>{
+      addEventListener('drag', (event)=>console.log("드래그"))
+  },[])
 
   return (
     <QueryClientProvider client={queryClient}>
