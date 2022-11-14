@@ -6,7 +6,8 @@ var cnt = 0;
 var month;
 var week;
 var category;
-var schedule; //content
+var content; //content
+var contents;
 var beforeSchedule = "";
 var startTime = ""; //starttime
 var endTime = ""; //endtime
@@ -58,15 +59,16 @@ function parseSchedule(data) {
 				dataArr[i] != null &&
 				dataArr[i][Object.keys(dataArr[i])[0]] != null
 			) {
-				schedule = dataArr[i][Object.keys(dataArr[i])[0]]; //dataArr[i] 요일인덱스
+				contents = dataArr[i][Object.keys(dataArr[i])[0]]; //dataArr[i] 요일인덱스
+				content = contents.split(",")[0];
 
-				if (schedule != beforeSchedule) {
+				if (content != beforeSchedule) {
 					//새로운 스케줄
 					if (startTime != "") {
-						location = content.split(",");
+						location = contents.split(",")[1];
 						makeJson();
 					}
-					beforeSchedule = schedule;
+					beforeSchedule = content;
 					startTime = parseStartTime(dataArr);
 					endTime = parseEndTime(dataArr);
 				} else {
@@ -76,7 +78,7 @@ function parseSchedule(data) {
 			}
 		}
 	}
-	location = content.split(",");
+	location = content.split(",")[1];
 	makeJson();
 }
 
@@ -115,6 +117,7 @@ function makeJson() {
 		.format("DD");
 	var jsonSchedule = new Object();
 
+	jsonSchedule._id = "";
 	jsonSchedule.title = null;
 	(jsonSchedule.content = beforeSchedule), (jsonSchedule.year = "2022");
 	jsonSchedule.month = month;
