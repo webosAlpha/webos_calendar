@@ -1,3 +1,6 @@
+const Sheet = require("../../schemas/sheet");
+const axios = require("axios");
+
 const GOOGLE_SHEET_ID = "1QWitMUG4_drX0EOBurg0t4u5ZgCOuGti3ySf6Txkzs4";
 var cnt = 0;
 var month;
@@ -116,13 +119,13 @@ function makeJson() {
 	(jsonSchedule.content = beforeSchedule), (jsonSchedule.year = "2022");
 	jsonSchedule.month = month;
 	jsonSchedule.week = week;
-	jsonSchedule.date = day;
+	jsonSchedule.day = day;
 	jsonSchedule.startedTime = startTime;
 	jsonSchedule.endedTime = endTime;
 	jsonSchedule.location = location;
 	jsonSchedule.category = category;
 	jsonSchedule.scheduleNote = "비고";
-	const Test = new Schedule(jsonSchedule);
+	const Test = new Sheet(jsonSchedule);
 	Test.save(); // 테스트
 }
 
@@ -144,3 +147,24 @@ function dayConverter(dayOfWeek) {
 			return 6;
 	}
 }
+
+const getSheetData = async (sheetName) => {
+	try {
+		var { data } = await axios({
+			method: "get",
+			url: `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?sheet=${sheetName}`,
+		});
+		data = parseUrl(data);
+		monthWeekCate = data[0].split('{"c":')[1]; // 첫 행 파싱
+		parseMonthWeekCate(monthWeekCate);
+
+		parseSchedule(data);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// module.exports 를 통해 다른 파일에서 사용할 수 있음
+module.exports = {
+	getSheetData,
+};
