@@ -119,7 +119,7 @@ function makeJson() {
 
 	jsonSchedule._id = "";
 	jsonSchedule.title = null;
-	(jsonSchedule.content = beforeSchedule), (jsonSchedule.year = "2022");   //이거 왜이렇게 해두셨지?
+	(jsonSchedule.content = beforeSchedule), (jsonSchedule.year = "2022");
 	jsonSchedule.month = month;
 	jsonSchedule.week = week;
 	jsonSchedule.day = day;
