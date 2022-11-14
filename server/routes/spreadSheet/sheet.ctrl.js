@@ -167,7 +167,20 @@ const getSheetData = async (sheetName) => {
 	}
 };
 
+const getData = async (req, res) => {
+	try {
+		const year = req.query.year;
+		const month = req.query.month;
+
+		const schedule = await Sheet.find({ year: year, month: month });
+		res.send(schedule);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+};
+
 // module.exports 를 통해 다른 파일에서 사용할 수 있음
 module.exports = {
 	getSheetData,
+	getData,
 };
