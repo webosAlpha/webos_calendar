@@ -14,4 +14,6 @@ router.get("/plz", async (req, res) => {
 	}
 });
 
+router.get("/", ctrl.getData);
+
 module.exports = router;

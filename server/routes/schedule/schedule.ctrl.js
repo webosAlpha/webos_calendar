@@ -6,7 +6,6 @@ const getData = async (req, res) => {
 		const month = req.query.month;
 
 		const schedule = await Schedule.find({ year: year, month: month });
-		console.log(schedule);
 		res.send(schedule);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
