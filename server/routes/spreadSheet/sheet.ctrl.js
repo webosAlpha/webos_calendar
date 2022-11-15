@@ -59,13 +59,11 @@ function parseSchedule(data) {
 				dataArr[i] != null &&
 				dataArr[i][Object.keys(dataArr[i])[0]] != null
 			) {
-				contents = dataArr[i][Object.keys(dataArr[i])[0]]; //dataArr[i] 요일인덱스
-				content = contents.split(",")[0];
+				content = dataArr[i][Object.keys(dataArr[i])[0]]; //dataArr[i] 요일인덱스
 
 				if (content != beforeSchedule) {
 					//새로운 스케줄
 					if (startTime != "") {
-						location = contents.split(",")[1];
 						makeJson();
 					}
 					beforeSchedule = content;
@@ -78,7 +76,6 @@ function parseSchedule(data) {
 			}
 		}
 	}
-	location = content.split(",")[1];
 	makeJson();
 }
 
@@ -119,13 +116,13 @@ function makeJson() {
 
 	jsonSchedule._id = "";
 	jsonSchedule.title = null;
-	(jsonSchedule.content = beforeSchedule), (jsonSchedule.year = "2022");
+	(jsonSchedule.content = beforeSchedule.split(", ")[0]), (jsonSchedule.year = "2022");
 	jsonSchedule.month = month;
 	jsonSchedule.week = week;
 	jsonSchedule.day = day;
 	jsonSchedule.startedTime = startTime;
 	jsonSchedule.endedTime = endTime;
-	jsonSchedule.location = location;
+	jsonSchedule.location = beforeSchedule.split(", ")[1];
 	jsonSchedule.category = category;
 	jsonSchedule.scheduleNote = "비고";
 	const Test = new Sheet(jsonSchedule);
