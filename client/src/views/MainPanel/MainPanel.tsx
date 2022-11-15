@@ -9,9 +9,10 @@ const MainPanel = () => {
   return (
     <div className="h-full">
         <WeatherPanel />
+        {/*<iframe className="h-full w-96" src="https://map.naver.com/v5/search/소몽?c=14098341.0446259,4501387.3749584,15,0,0,0,dh&isCorrectAnswer=true"></iframe>*/}
+
         <Panel className="h-full px-0">
-        <iframe src="https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&sq=&o=&q=%E3%85%87%E3%84%B4%E3%85%87%E3%84%B4" height={900} className="h-96 w-96 z-[988899] opacity-100"></iframe>
-          <Calendar />
+            <Calendar />
         </Panel>
     </div>
   );
