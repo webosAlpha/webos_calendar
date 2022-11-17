@@ -21,17 +21,12 @@ function getWeather(latitude, longitude) {
         }).then(json => {
             for (let index = -1; ++index < 40;) {
                 // 해당 날짜의 최소, 최대기온 구하기
-                // 같은 날짜일 때
                 if (json.list[index].dt_txt.split(" ")[0] == currentDate) {
                     setTemps(index, json);
                 } else {
                     if (index > 0) {
                         setParams(index, json);
                         makeJson();
-                        //console.log("날짜: " + currentDate);
-                        //console.log("최대: " + maxCelTemp);
-                        //console.log("최소: " + minCelTemp);
-                        //console.log("날씨: " + weather);
                         initializeTemp();
                     }
                     currentDate = json.list[index].dt_txt.split(" ")[0];
@@ -79,7 +74,7 @@ function initializeTemp() {
 function makeJson() {
 	var jsonWeather = new Object();
 
-	jsonWeather._id = "";
+    jsonWeather._id = "";
     jsonWeather.year = year;
     jsonWeather.month = month;
     jsonWeather.day = day;
@@ -88,10 +83,9 @@ function makeJson() {
     jsonWeather.weather = weather;
     jsonWeather.highestTmp = maxCelTemp;
     jsonWeather.lowestTmp = minCelTemp;
-    //console.log(jsonWeather);
 
-	//const Test = new Sheet(jsonWeather);
-	//Test.save();
+    //const Test = new Sheet(jsonWeather);
+    //Test.save();
 }
 
 function load() {
