@@ -53,16 +53,6 @@ function setParams(index, json) {
     year =  currentDate.split("-")[0];
     month = currentDate.split("-")[1];
     day = currentDate.split("-")[2];
-    if (weather == "Clear") {
-        videoUrl = "https://webosresource.s3.ap-northeast-2.amazonaws.com/clear.mp4";
-        pictureUrl = "https://webosresource.s3.ap-northeast-2.amazonaws.com/clearimg.jpg";
-    } else if (weather == "Clouds") {
-        videoUrl = "https://webosresource.s3.ap-northeast-2.amazonaws.com/cloud.mp4";
-        pictureUrl = "https://webosresource.s3.ap-northeast-2.amazonaws.com/cloudimg.jpg";
-    } else if (weather == "Rain") {
-        videoUrl = "https://webosresource.s3.ap-northeast-2.amazonaws.com/rain.mp4";
-        pictureUrl = "https://webosresource.s3.ap-northeast-2.amazonaws.com/rainimg.jpg";
-    }
 }
 
 function initializeTemp() {
@@ -78,8 +68,6 @@ function makeJson() {
     jsonWeather.year = year;
     jsonWeather.month = month;
     jsonWeather.day = day;
-    jsonWeather.videoUrl = videoUrl;
-    jsonWeather.pictureUrl = pictureUrl;
     jsonWeather.weather = weather;
     jsonWeather.highestTmp = maxCelTemp;
     jsonWeather.lowestTmp = minCelTemp;
