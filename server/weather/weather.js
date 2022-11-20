@@ -53,6 +53,10 @@ function setParams(index, json) {
     year =  currentDate.split("-")[0];
     month = currentDate.split("-")[1];
     day = currentDate.split("-")[2];
+
+    if (weather != "Clear" && weather != "Rain" && weather != "Clouds") {
+        weather = Clear;
+    }
 }
 
 function initializeTemp() {
@@ -64,7 +68,6 @@ function initializeTemp() {
 function makeJson() {
 	var jsonWeather = new Object();
 
-    jsonWeather._id = "";
     jsonWeather.year = year;
     jsonWeather.month = month;
     jsonWeather.day = day;
