@@ -54,7 +54,7 @@ function setParams(index, json) {
     month = currentDate.split("-")[1];
     day = currentDate.split("-")[2];
 
-    if (weather != "Clear" && weather != "Rain" && weather != "Clouds") {
+    if (weather != "Clear" && weather != "Rain" && weather != "Clouds" && weather != "Snow") {
         weather = Clear;
     }
 }
