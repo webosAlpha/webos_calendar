@@ -7,10 +7,6 @@ const scheduleSchema = new Schema({
 		type: Number,
 		required: true,
 	},
-	user_id: {
-		type: Number,
-		required: false,
-	},
 
 	// 내용
 	content: {
@@ -47,6 +43,11 @@ const scheduleSchema = new Schema({
 	},
 	location: {
 		type: String,
+		required: false,
+	},
+
+	user_id: {
+		type: Number,
 		required: false,
 	},
 });
