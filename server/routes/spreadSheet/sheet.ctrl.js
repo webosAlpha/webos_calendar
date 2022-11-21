@@ -125,9 +125,19 @@ function makeJson() {
 	jsonSchedule.location = beforeSchedule.split(", ")[1];
 	jsonSchedule.category = category;
 	jsonSchedule.scheduleNote = "비고";
-	const Test = new Sheet(jsonSchedule);
-	Test.save(); // 테스트
+	jsonList.push(jsonSchedule) ; // 리스트에 생성된 객체 삽입
 }
+
+function makeJsonFile(){
+	const jsondata = {
+	  "schedules":
+		jsonList
+	}
+	const fs = require('fs')
+	const jdata = JSON.stringify(jsondata)
+	const jsdata = jdata.replace(/\\/g, "");
+	fs.writeFileSync('data.json',jsdata);
+  }
 
 function dayConverter(dayOfWeek) {
 	switch (dayOfWeek) {
@@ -157,8 +167,8 @@ const getSheetData = async (sheetName) => {
 		data = parseUrl(data);
 		monthWeekCate = data[0].split('{"c":')[1]; // 첫 행 파싱
 		parseMonthWeekCate(monthWeekCate);
-
 		parseSchedule(data);
+		makeJsonFile();
 	} catch (error) {
 		console.log(error);
 	}
@@ -181,3 +191,4 @@ module.exports = {
 	getSheetData,
 	getData,
 };
+getSheetData('webostest');
