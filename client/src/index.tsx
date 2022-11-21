@@ -8,6 +8,7 @@ const appElement = (
   <RecoilRoot>
     <App />
   </RecoilRoot>
+
 );
 
 // In a browser environment, render instead of exporting
