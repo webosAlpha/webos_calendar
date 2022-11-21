@@ -2,19 +2,13 @@ const express = require("express");
 const router = express.Router();
 const ctrl = require("./schedule.ctrl");
 
+// 기본으로 접속했을때 데이터를 띄워 줌
 router.get("/", ctrl.getData);
 
-// router.post("/insert", async (req, res) => {
-// 	try {
-// 		const obj = data.json.schedule;
-// 		console.log(obj);
-// 		const schedule = new Schedule(obj);
-// 		await schedule.save();
-// 		res.json({ message: "schedule 저장" });
-// 	} catch (err) {
-// 		console.log(err);
-// 		res.json({ message: false });
-// 	}
-// });
+// 데이터 추가
+router.post("/insert", ctrl.insertData);
+
+// 삭제
+router.delete("/delete", ctrl.deleteData);
 
 module.exports = router;

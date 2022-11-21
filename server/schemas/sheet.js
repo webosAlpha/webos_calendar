@@ -5,9 +5,11 @@ const { Schema } = mongoose; // 비구조 할당
 const sheetSchema = new Schema({
 	_id: {
 		type: Number,
+		required: true,
 	},
-	title: {
-		type: String,
+	user_id: {
+		type: Number,
+		required: false,
 	},
 	content: {
 		type: String,
@@ -23,6 +25,7 @@ const sheetSchema = new Schema({
 	},
 	week: {
 		type: String,
+		required: true,
 	},
 	day: {
 		type: String,
@@ -42,9 +45,6 @@ const sheetSchema = new Schema({
 	category: {
 		type: String,
 		required: true,
-	},
-	scheduleNote: {
-		type: String,
 	},
 });
 
