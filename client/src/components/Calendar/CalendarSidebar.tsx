@@ -5,13 +5,20 @@ import { CalendarContext } from "./Calendar";
 import CalendarTodoList from "./CalendarTodoList";
 import { Schedule } from "../../../typing";
 import EmptyTodo from "./EmptyTodo";
+import { useRecoilValue } from "recoil";
+import { selectedDateState } from "../../atoms/selectedDateAtom";
+import { WEATHER_BASEURL } from "../../utils/Utils";
+import { weatherState } from "../../atoms/weatherAtom";
 
 interface Props {
   selectedDateTodo: Schedule[] | undefined;
 }
 
 function CalendarSidebar({ selectedDateTodo }: Props) {
-  const { sideBarOpen, selectedDate } = useContext(CalendarContext);
+  const selectedDate = useRecoilValue(selectedDateState);
+  const weather = useRecoilValue(weatherState);
+
+  const { sideBarOpen } = useContext(CalendarContext);
   // const [todayScheduleList, setTodayScheduleList] = useState<Schedule[]>([]);
   let todayScheduleList: Schedule[] = [];
   let tomorrowScheduleList: Schedule[] = [];
@@ -36,7 +43,7 @@ function CalendarSidebar({ selectedDateTodo }: Props) {
       <div className="relative h-44 aspect-video justify-end flex flex-col">
         <div className="sidebar_bg ">
           <Image
-            src="https://cdn.pixabay.com/photo/2017/08/01/22/38/flash-2568381__340.jpg"
+            src={`${WEATHER_BASEURL}/${weather}.jpg`}
             style={{
               width: "100%",
               height: "100%",
