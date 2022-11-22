@@ -21,10 +21,9 @@ function Calendar() {
         .get(
           `/schedules/sheet?year=${selectedDate
             .clone()
-            .format("YYYY")}&month=${selectedDate.clone().format("MM")}`
+            .format("YYYY")}&month=${selectedDate.clone().format("M")}`
         )
         .then((response: AxiosResponse<Schedule[]>) => {
-          console.log(response.data);
           return response.data;
         })
   );

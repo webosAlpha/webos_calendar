@@ -106,13 +106,13 @@ function parseEndTime(dataArr) {
 function makeJson() {
 	cnt += 1;
 	var year = "2022";
-	weekOfYear = moment(`${year}-${month}`).week() + (Number(week) - 1);
+	weekOfYear = moment(`${year}-0${month}`).week() + (Number(week) - 1);
 	day = moment(year)
 		.week(weekOfYear)
 		.startOf("week")
 		.day(dayConverter(dayOfTheWeek))
 		.format("DD");
-	var jsonSchedule = {};
+	var jsonSchedule = new Object();
 
 	jsonSchedule._id = cnt;
 	jsonSchedule.content = beforeSchedule.split(", ")[0];
