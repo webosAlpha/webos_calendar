@@ -1,4 +1,25 @@
 const Schedule = require("../../schemas/schedule");
+const parse = require("./sheet.parse");
+const sheetData = require("../../sheetData.json");
+
+parse.getSheetData("webostest");
+
+const plzSchedule = async (req, res) => {
+	try {
+		const schedule = await Schedule.find();
+		res.json(schedule);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+};
+
+const plzSheet = async (req, res) => {
+	try {
+		res.json(sheetData);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+};
 
 const getData = async (req, res) => {
 	try {
@@ -6,7 +27,25 @@ const getData = async (req, res) => {
 		const month = req.query.month;
 
 		const schedule = await Schedule.find({ year: year, month: month });
+
 		res.json(schedule);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+};
+
+const getSheet = async (req, res) => {
+	try {
+		const sheetList = [];
+
+		const year = req.query.year;
+		const month = req.query.month;
+
+		sheetData.forEach((e) => {
+			e.year == year && e.month == month ? sheetList.push(e) : null;
+		});
+
+		res.json(sheetList);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -49,7 +88,10 @@ const deleteData = async (req, res) => {
 };
 
 module.exports = {
+	plzSheet,
+	plzSchedule,
 	getData,
 	insertData,
 	deleteData,
+	getSheet,
 };
