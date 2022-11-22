@@ -1,8 +1,8 @@
-import { createRoot, hydrateRoot } from "react-dom/client";
+import {createRoot, hydrateRoot} from "react-dom/client";
 import "./tailwind.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { RecoilRoot } from "recoil";
+import {RecoilRoot} from "recoil";
 
 const appElement = (
   <RecoilRoot>

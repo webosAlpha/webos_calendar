@@ -13,7 +13,7 @@
 2. www.localhost:8080 접속
 
 
-더미데이터 json-server로 띄우는 법
+더미데이터 json-server 로 띄우는 법
 
 1. `npm install -g json-server`
 2. `json-server --watch ./src/db/data.json --port 3001`

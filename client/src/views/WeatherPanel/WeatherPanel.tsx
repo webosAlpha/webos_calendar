@@ -12,7 +12,6 @@ const WeatherPanel = () => {
   const [weather, setWeather] = useRecoilState(weatherState);
   const [dummyCount, setDummyCount] = useState(0);
   const weatherList = ["Clear", "Rain", "Clouds", "Snow"];
-
   useEffect(() => {
     setDummyCount((dummyCount + 1) % 4);
     setWeather(weatherList[dummyCount]);
@@ -20,7 +19,7 @@ const WeatherPanel = () => {
 
   return (
     <VideoPlayer
-      className="static opacity-30 bg-black -z-50"
+      className="static -z-50 bg-black opacity-30"
       autoPlay
       loop
       muted

@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import {atom} from "recoil";
 import moment from "moment";
 
 export const todayState = atom({

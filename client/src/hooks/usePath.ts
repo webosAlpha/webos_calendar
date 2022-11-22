@@ -1,5 +1,5 @@
-import { useRecoilState } from "recoil";
-import { pathState } from "../atoms/pathAtom";
+import {useRecoilState} from "recoil";
+import {pathState} from "../atoms/pathAtom";
 
 function usePath() {
   const [path, setPath] = useRecoilState(pathState);

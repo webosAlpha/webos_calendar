@@ -1,11 +1,12 @@
 import React from "react";
-import { Schedule } from "../../../typing";
+import {Schedule} from "../../../typing";
 
 interface Props {
   schedule: Schedule;
 }
 
 function CalendarTodoList({ schedule }: Props) {
+
   return (
     <div
       className={`${

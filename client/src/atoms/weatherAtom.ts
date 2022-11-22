@@ -1,5 +1,4 @@
-import { atom } from "recoil";
-import moment from "moment";
+import {atom} from "recoil";
 
 export const weatherState = atom({
   key: "weatherState",

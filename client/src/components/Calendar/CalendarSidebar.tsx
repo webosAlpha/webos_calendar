@@ -1,7 +1,6 @@
 import moment from "moment/moment";
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import Image from "@enact/sandstone/Image";
-import { CalendarContext } from "./Calendar";
 import CalendarTodoList from "./CalendarTodoList";
 import { Schedule } from "../../../typing";
 import EmptyTodo from "./EmptyTodo";
@@ -9,38 +8,78 @@ import { useRecoilValue } from "recoil";
 import { selectedDateState } from "../../atoms/selectedDateAtom";
 import { WEATHER_BASEURL } from "../../utils/Utils";
 import { weatherState } from "../../atoms/weatherAtom";
+import { sidebarState } from "../../atoms/sidebarAtom";
+import uuid from "react-uuid";
 
 interface Props {
-  selectedDateTodo: Schedule[] | undefined;
+  scheduleList: Schedule[] | undefined;
 }
 
-function CalendarSidebar({ selectedDateTodo }: Props) {
+function CalendarSidebar({ scheduleList }: Props) {
   const selectedDate = useRecoilValue(selectedDateState);
   const weather = useRecoilValue(weatherState);
+  const sideBarOpen = useRecoilValue(sidebarState);
+  const [todayScheduleList, setTodayScheduleList] = useState<Schedule[]>([]);
+  const [tomorrowScheduleList, setTomorrowScheduleList] = useState<Schedule[]>(
+    []
+  );
+  const [dayAfterTomorrowScheduleList, setDayAfterTomorrowScheduleList] =
+    useState<Schedule[]>([]);
 
-  const { sideBarOpen } = useContext(CalendarContext);
-  // const [todayScheduleList, setTodayScheduleList] = useState<Schedule[]>([]);
-  let todayScheduleList: Schedule[] = [];
-  let tomorrowScheduleList: Schedule[] = [];
-  let dayAfterTomorrowScheduleList: Schedule[] = [];
+  useEffect(() => {
+    let newTodayScheduleList: Schedule[] = [];
+    let newTomorrowScheduleList: Schedule[] = [];
+    let newDayAfterTomorrowScheduleList: Schedule[] = [];
 
-  selectedDateTodo?.forEach((schedule) => {
-    if (schedule.day === selectedDate.format("DD")) {
-      todayScheduleList.push(schedule);
-    } else if (Number(schedule.day) === Number(selectedDate.format("DD")) + 1) {
-      tomorrowScheduleList.push(schedule);
-    } else {
-      dayAfterTomorrowScheduleList.push(schedule);
-    }
-  });
+    scheduleList?.forEach((schedule) => {
+      if (schedule.day === selectedDate.format("DD")) {
+        newTodayScheduleList.push(schedule);
+      } else if (
+        Number(schedule.day) ===
+        Number(selectedDate.clone().add(1, "day").format("DD"))
+      ) {
+        newTomorrowScheduleList.push(schedule);
+      } else if (
+        Number(schedule.day) ===
+        Number(selectedDate.clone().add(2, "day").format("DD"))
+      ) {
+        newDayAfterTomorrowScheduleList.push(schedule);
+      }
+    });
+    setTodayScheduleList(newTodayScheduleList);
+    setTomorrowScheduleList(newTomorrowScheduleList);
+    setDayAfterTomorrowScheduleList(newDayAfterTomorrowScheduleList);
+  }, [selectedDate]);
+
+  const renderTodoList = useCallback((list: Schedule[], number: number) => {
+    return (
+      <React.Fragment key={uuid()}>
+        <h1 className="todoList_title">
+          {selectedDate
+            .clone()
+            .add(number, "day")
+            .locale("en")
+            .format("MMM, D")}
+          &nbsp; TODO
+        </h1>
+        {list.length > 0
+          ? list.map((schedule) => (
+              <CalendarTodoList key={uuid()} schedule={schedule} />
+            ))
+          : renderEmptyTodo}
+      </React.Fragment>
+    );
+  }, []);
+
+  const renderEmptyTodo = useMemo(() => <EmptyTodo />, []);
 
   return (
     <div
-      className={`transition-all ease-in-out overflow-hidden duration-700 whitespace-nowrap -ml-10 h-full ${
+      className={`-ml-10 h-full overflow-hidden whitespace-nowrap transition-all duration-700 ease-in-out ${
         sideBarOpen ? "w-80" : "w-0"
       }`}
     >
-      <div className="relative h-44 aspect-video justify-end flex flex-col">
+      <div className="relative flex aspect-video h-44 flex-col justify-end">
         <div className="sidebar_bg ">
           <Image
             src={`${WEATHER_BASEURL}/${weather}.jpg`}
@@ -52,7 +91,7 @@ function CalendarSidebar({ selectedDateTodo }: Props) {
             }}
           />
         </div>
-        <div className="flex flex-col justify-evenly items-end mr-3 mb-3">
+        <div className="mr-3 mb-3 flex flex-col items-end justify-evenly">
           <p className="text-4xl">
             {moment(selectedDate).locale("en-gb").format("YYYY")}
           </p>
@@ -62,42 +101,15 @@ function CalendarSidebar({ selectedDateTodo }: Props) {
           </p>
         </div>
       </div>
-      <div className="max-h-[75%] px-5 scrollbar-hide overflow-x-hidden">
-        <h1 className="todoList_title">
-          {selectedDate.clone().locale("en").format("MMM, D")}&nbsp; TODO
-        </h1>
-        {todayScheduleList.length > 0 ? (
-          todayScheduleList.map((schedule) => (
-            <CalendarTodoList key={schedule._id} schedule={schedule} />
-          ))
-        ) : (
-          <EmptyTodo />
-        )}
-        <h1 className="todoList_title">
-          {selectedDate.clone().add(1, "day").locale("en").format("MMM, D")}
-          &nbsp; TODO
-        </h1>
-        {tomorrowScheduleList.length > 0 ? (
-          tomorrowScheduleList.map((schedule) => (
-            <CalendarTodoList key={schedule._id} schedule={schedule} />
-          ))
-        ) : (
-          <EmptyTodo />
-        )}
-        <h1 className="todoList_title">
-          {selectedDate.clone().add(2, "day").locale("en").format("MMM, D")}
-          &nbsp; TODO
-        </h1>
-        {dayAfterTomorrowScheduleList.length > 0 ? (
-          dayAfterTomorrowScheduleList.map((schedule) => (
-            <CalendarTodoList key={schedule._id} schedule={schedule} />
-          ))
-        ) : (
-          <EmptyTodo />
-        )}
+      <div className="max-h-[75%] overflow-x-hidden px-5 scrollbar-hide">
+        {[
+          todayScheduleList,
+          tomorrowScheduleList,
+          dayAfterTomorrowScheduleList,
+        ].map((scheduleList, index) => renderTodoList(scheduleList, index))}
       </div>
     </div>
   );
 }
 
-export default CalendarSidebar;
+export default memo(CalendarSidebar);

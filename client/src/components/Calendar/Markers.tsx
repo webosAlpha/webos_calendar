@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { Schedule } from "../../../typing";
+
 interface Props {
   markers?: Schedule[];
 }
@@ -20,7 +21,7 @@ function Markers({ markers }: Props) {
                 ? "bg-fuchsia-600"
                 : marker.category === "학교"
                 ? "bg-amber-300"
-                : ""
+                : "bg-gray-400"
             }  `}
           ></div>
         ))
