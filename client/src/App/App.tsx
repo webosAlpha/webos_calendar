@@ -1,11 +1,11 @@
-import { Panels, Routable, Route } from "@enact/sandstone/Panels";
+import {Panels, Routable, Route} from "@enact/sandstone/Panels";
 import ThemeDecorator from "@enact/sandstone/ThemeDecorator";
 import MainPanel from "../views/MainPanel/MainPanel";
 import SettingPanel from "../views/SettingPanel/SettingPanel";
-import { useRecoilState } from "recoil";
-import { pathState } from "../atoms/pathAtom";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { useCallback, useEffect } from "react";
+import {useRecoilState} from "recoil";
+import {pathState} from "../atoms/pathAtom";
+import {QueryClient, QueryClientProvider} from "react-query";
+import {useCallback, useEffect} from "react";
 import axios from "axios";
 
 // @ts-ignore

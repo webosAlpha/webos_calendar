@@ -75,7 +75,7 @@ function initializeTemp() {
 
 //Json형태로 결합, DBserver 전송
 function makeJson() {
-  var jsonWeather = new Object();
+  var jsonWeather = {};
 
   jsonWeather.year = year;
   jsonWeather.month = month;

@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { Schedule } from "../../../typing";
+
 interface Props {
   markers?: Schedule[];
 }

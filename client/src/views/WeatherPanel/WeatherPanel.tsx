@@ -1,9 +1,9 @@
-import { VideoPlayer } from "@enact/sandstone/VideoPlayer";
-import { memo, useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedDateState } from "../../atoms/selectedDateAtom";
-import { WEATHER_BASEURL } from "../../utils/Utils";
-import { weatherState } from "../../atoms/weatherAtom";
+import {VideoPlayer} from "@enact/sandstone/VideoPlayer";
+import {memo, useEffect, useState} from "react";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {selectedDateState} from "../../atoms/selectedDateAtom";
+import {WEATHER_BASEURL} from "../../utils/Utils";
+import {weatherState} from "../../atoms/weatherAtom";
 
 const WeatherPanel = () => {
   const selectedDate = useRecoilValue(selectedDateState);
@@ -12,7 +12,6 @@ const WeatherPanel = () => {
   const [weather, setWeather] = useRecoilState(weatherState);
   const [dummyCount, setDummyCount] = useState(0);
   const weatherList = ["Clear", "Rain", "Clouds", "Snow"];
-
   useEffect(() => {
     setDummyCount((dummyCount + 1) % 4);
     setWeather(weatherList[dummyCount]);

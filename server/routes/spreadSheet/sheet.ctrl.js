@@ -112,7 +112,7 @@ function makeJson() {
 		.startOf("week")
 		.day(dayConverter(dayOfTheWeek))
 		.format("DD");
-	var jsonSchedule = new Object();
+	var jsonSchedule = {};
 
 	jsonSchedule._id = "";
 	jsonSchedule.title = null;
