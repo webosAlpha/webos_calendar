@@ -61,7 +61,7 @@ function CalendarBody({ scheduleList }: Props) {
               let markers = scheduleList?.filter((schedule) => {
                 return (
                   schedule.day === current.format("DD") &&
-                  schedule.month === current.format("M")
+                  schedule.month === current.format("MM")
                 );
               });
 
