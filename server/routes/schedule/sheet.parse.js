@@ -113,6 +113,8 @@ function makeJson() {
 		.day(dayConverter(dayOfTheWeek))
 		.format("DD");
 	var jsonSchedule = new Object();
+	
+	validateDate();
 
 	jsonSchedule._id = cnt;
 	jsonSchedule.content = beforeSchedule.split(", ")[0];
@@ -126,6 +128,18 @@ function makeJson() {
 	jsonSchedule.location = beforeSchedule.split(", ")[1];
 	jsonSchedule.user_id = 1;
 	jsonList.push(jsonSchedule);
+}
+
+function validateDate(){
+	if (month.length < 2) {
+		month = "0" + month;
+	}
+	if (week.length < 2) {
+		week = "0" + week;
+	}
+	if (day.length < 2) {
+		day = "0" + day;
+	}
 }
 
 function makeJsonFile() {
