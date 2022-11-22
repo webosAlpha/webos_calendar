@@ -13,7 +13,6 @@ const plzSchedule = async (req, res) => {
 
 const plzSheet = async (req, res) => {
 	try {
-		parse.getSheetData("webostest");
 		res.json(sheetData);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
@@ -35,7 +34,6 @@ const getData = async (req, res) => {
 
 const getSheet = async (req, res) => {
 	try {
-		parse.getSheetData("webostest");
 		const sheetList = [];
 
 		const year = req.query.year;
