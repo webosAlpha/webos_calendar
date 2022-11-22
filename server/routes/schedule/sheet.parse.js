@@ -1,8 +1,8 @@
-const Sheet = require("../../schemas/sheet");
+// const Sheet = require("../../schemas/sheet");
 const axios = require("axios");
 
 const GOOGLE_SHEET_ID = "1QWitMUG4_drX0EOBurg0t4u5ZgCOuGti3ySf6Txkzs4";
-var cnt = 0;
+let cnt = 1000;
 var month;
 var week;
 var category;
@@ -114,19 +114,25 @@ function makeJson() {
 		.format("DD");
 	var jsonSchedule = {};
 
-	jsonSchedule._id = "";
-	jsonSchedule.title = null;
-	(jsonSchedule.content = beforeSchedule.split(", ")[0]), (jsonSchedule.year = "2022");
+	jsonSchedule._id = cnt;
+	jsonSchedule.content = beforeSchedule.split(", ")[0];
+	jsonSchedule.year = "2022";
 	jsonSchedule.month = month;
 	jsonSchedule.week = week;
 	jsonSchedule.day = day;
 	jsonSchedule.startedTime = startTime;
 	jsonSchedule.endedTime = endTime;
-	jsonSchedule.location = beforeSchedule.split(", ")[1];
 	jsonSchedule.category = category;
-	jsonSchedule.scheduleNote = "비고";
-	const Test = new Sheet(jsonSchedule);
-	Test.save(); // 테스트
+	jsonSchedule.location = beforeSchedule.split(", ")[1];
+	jsonSchedule.user_id = 1;
+	jsonList.push(jsonSchedule);
+}
+
+function makeJsonFile() {
+	const fs = require("fs");
+	const jdata = JSON.stringify(jsonList);
+	const jsdata = jdata.replace(/\\/g, "");
+	fs.writeFileSync("sheetData.json", jsdata);
 }
 
 function dayConverter(dayOfWeek) {
@@ -157,27 +163,13 @@ const getSheetData = async (sheetName) => {
 		data = parseUrl(data);
 		monthWeekCate = data[0].split('{"c":')[1]; // 첫 행 파싱
 		parseMonthWeekCate(monthWeekCate);
-
 		parseSchedule(data);
+		makeJsonFile();
 	} catch (error) {
 		console.log(error);
 	}
 };
 
-const getData = async (req, res) => {
-	try {
-		const year = req.query.year;
-		const month = req.query.month;
-
-		const schedule = await Sheet.find({ year: year, month: month });
-		res.send(schedule);
-	} catch (err) {
-		res.status(500).json({ message: err.message });
-	}
-};
-
-// module.exports 를 통해 다른 파일에서 사용할 수 있음
 module.exports = {
 	getSheetData,
-	getData,
 };

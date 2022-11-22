@@ -7,9 +7,8 @@ const scheduleSchema = new Schema({
 		type: Number,
 		required: true,
 	},
-	title: {
-		type: String,
-	},
+
+	// 내용
 	content: {
 		type: String,
 		required: true,
@@ -24,9 +23,7 @@ const scheduleSchema = new Schema({
 	},
 	week: {
 		type: String,
-	},
-	dayOfTheWeek: {
-		type: String,
+		required: true,
 	},
 	day: {
 		type: String,
@@ -40,15 +37,18 @@ const scheduleSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	location: {
-		type: String,
-	},
 	category: {
 		type: String,
 		required: true,
 	},
-	scheduleNote: {
+	location: {
 		type: String,
+		required: false,
+	},
+
+	user_id: {
+		type: Number,
+		required: false,
 	},
 });
 
