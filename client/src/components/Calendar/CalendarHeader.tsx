@@ -1,16 +1,18 @@
-import React, {memo, useCallback, useMemo, useState} from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import Icon from "@enact/sandstone/Icon";
 import Button from "@enact/sandstone/Button";
-import {Link} from "@enact/ui/Routable";
-import {useRecoilState, useRecoilValue} from "recoil";
-import {muteState} from "../../atoms/muteAtom";
-import {selectedDateState} from "../../atoms/selectedDateAtom";
-import {todayState} from "../../atoms/todayAtom";
+import { Link } from "@enact/ui/Routable";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { muteState } from "../../atoms/muteAtom";
+import { selectedDateState } from "../../atoms/selectedDateAtom";
+import { todayState } from "../../atoms/todayAtom";
+import { sidebarState } from "../../atoms/sidebarAtom";
 
 function CalendarHeader() {
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateState);
-  const [editFormOpen, setEditFormOpen] = useState(false);
   const [mute, setMute] = useRecoilState(muteState);
+  const [sidebarOpen, setSidebarOpen] = useRecoilState(sidebarState);
+  const [editFormOpen, setEditFormOpen] = useState(false);
   const today = useRecoilValue(todayState);
 
   const prevMonth = useCallback(() => {
@@ -26,6 +28,7 @@ function CalendarHeader() {
   }, [today]);
 
   const handleScheduleClick = useCallback(() => {
+    setSidebarOpen(false);
     setEditFormOpen((prev) => !prev);
   }, []);
 
@@ -42,8 +45,6 @@ function CalendarHeader() {
       </Link>
     );
   }, []);
-
-
 
   return (
     <header className="flex h-[15%] w-full items-center justify-center">

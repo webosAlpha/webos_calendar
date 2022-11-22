@@ -1,12 +1,18 @@
-import React, {memo, ReactNode, useCallback, useLayoutEffect, useState,} from "react";
-import {Moment} from "moment";
-import {useRecoilState, useRecoilValue} from "recoil";
-import {todayState} from "../../atoms/todayAtom";
-import {Schedule} from "../../../typing";
+import React, {
+  memo,
+  ReactNode,
+  useCallback,
+  useLayoutEffect,
+  useState,
+} from "react";
+import { Moment } from "moment";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { todayState } from "../../atoms/todayAtom";
+import { Schedule } from "../../../typing";
 import Markers from "./Markers";
 import uuid from "react-uuid";
-import {selectedDateState} from "../../atoms/selectedDateAtom";
-import {sidebarState} from "../../atoms/sidebarAtom";
+import { selectedDateState } from "../../atoms/selectedDateAtom";
+import { sidebarState } from "../../atoms/sidebarAtom";
 
 interface Props {
   scheduleList: Schedule[] | undefined;
@@ -27,7 +33,6 @@ function CalendarBody({ scheduleList }: Props) {
 
   const handleClick = useCallback(
     (date: Moment) => {
-
       if (date.format("L") === selectedDate.format("L")) {
         setSideBarOpen((prev) => !prev);
       } else {
@@ -93,8 +98,6 @@ function CalendarBody({ scheduleList }: Props) {
     }
     setCalendar(newCalendar);
   }, [selectedDate, scheduleList]);
-
-
 
   return (
     <div className="flex w-full flex-1 flex-col justify-around pb-10">

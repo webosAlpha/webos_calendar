@@ -1,9 +1,9 @@
-import {VideoPlayer} from "@enact/sandstone/VideoPlayer";
-import {memo, useEffect, useState} from "react";
-import {useRecoilState, useRecoilValue} from "recoil";
-import {selectedDateState} from "../../atoms/selectedDateAtom";
-import {WEATHER_BASEURL} from "../../utils/Utils";
-import {weatherState} from "../../atoms/weatherAtom";
+import { VideoPlayer } from "@enact/sandstone/VideoPlayer";
+import { memo, useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { selectedDateState } from "../../atoms/selectedDateAtom";
+import { WEATHER_BASEURL } from "../../utils/Utils";
+import { weatherState } from "../../atoms/weatherAtom";
 
 const WeatherPanel = () => {
   const selectedDate = useRecoilValue(selectedDateState);
@@ -19,7 +19,7 @@ const WeatherPanel = () => {
 
   return (
     <VideoPlayer
-      className="static opacity-30 bg-black -z-50"
+      className="static -z-50 bg-black opacity-30"
       autoPlay
       loop
       muted

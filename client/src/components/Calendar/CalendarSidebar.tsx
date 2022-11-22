@@ -1,5 +1,5 @@
 import moment from "moment/moment";
-import React, { memo, useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import Image from "@enact/sandstone/Image";
 import CalendarTodoList from "./CalendarTodoList";
 import { Schedule } from "../../../typing";
@@ -51,7 +51,7 @@ function CalendarSidebar({ scheduleList }: Props) {
     setDayAfterTomorrowScheduleList(newDayAfterTomorrowScheduleList);
   }, [selectedDate]);
 
-  const renderTodoList = (list: Schedule[], number: number) => {
+  const renderTodoList = useCallback((list: Schedule[], number: number) => {
     return (
       <React.Fragment key={uuid()}>
         <h1 className="todoList_title">
@@ -69,7 +69,7 @@ function CalendarSidebar({ scheduleList }: Props) {
           : renderEmptyTodo}
       </React.Fragment>
     );
-  };
+  }, []);
 
   const renderEmptyTodo = useMemo(() => <EmptyTodo />, []);
 
