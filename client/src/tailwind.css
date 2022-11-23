@@ -77,6 +77,10 @@ html {
   .form_input {
     @apply h-10 cursor-pointer rounded-md bg-[#7D848C] px-4 text-[#E6E6E6] transition-all hover:scale-105 hover:bg-[#E6E6E6] hover:text-[#4C5059];
   }
+
+  .form_input_error {
+    @apply inline-block text-xs text-amber-200 ml-2;
+  }
   .datepicker_number {
     @apply bg-white/0 text-center text-[#4C5059];
   }

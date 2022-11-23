@@ -1,5 +1,4 @@
 export interface Schedule {
-  _id: number;
   content: string; // 내용
   year: string;
   month: string;
@@ -10,6 +9,7 @@ export interface Schedule {
   category: string;
   location: string;
   user_id: number;
+  _id?: number;
 }
 
 export interface Weather {

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   selectedDateState,
   selectedEditDateState,
@@ -17,8 +17,14 @@ interface Props {
 }
 
 function DatePicker({ setValue, type }: Props) {
+  const openEditForm = useRecoilValue(openEditFormState);
   const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
+
+  useEffect(() => {
+    setHour(0);
+    setMinute(0);
+  }, [openEditForm]);
 
   const addHour = useCallback(() => setHour((prev) => (prev + 1) % 24), []);
 
