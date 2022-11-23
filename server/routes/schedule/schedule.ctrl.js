@@ -52,7 +52,7 @@ const getSheet = async (req, res) => {
 const insertData = async (req, res) => {
 	try {
 		const obj = {
-			_id: req.body._id,
+			_id: 123123,
 			user_id: req.body.user_id,
 			content: req.body.content,
 			year: req.body.year,
