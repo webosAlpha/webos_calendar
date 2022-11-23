@@ -19,4 +19,7 @@ router.post("/", ctrl.insertData);
 // 삭제
 router.delete("/", ctrl.deleteData);
 
+// 삽입 테스트 할때 사용하세요
+router.get("/test", ctrl.insertTest);
+
 module.exports = router;
