@@ -24,7 +24,7 @@ html {
   }
 
   .cell {
-    @apply w-11 h-11 flex items-center justify-center text-center hover:scale-110 cursor-pointer rounded-full;
+    @apply flex h-11 w-11 cursor-pointer items-center justify-center rounded-full text-center hover:scale-110;
   }
 
   .same_month {
@@ -43,11 +43,11 @@ html {
   }
 
   .scheduleMarker_container {
-    @apply w-full absolute -bottom-6 h-6 flex justify-center items-center;
+    @apply absolute -bottom-6 flex h-6 w-full items-center justify-center;
   }
 
   .scheduleMarker_num {
-    @apply bg-gray-300/20 text-white rounded-full text-xs h-fit w-fit px-0.5 flex justify-center items-center;
+    @apply flex h-fit w-fit items-center justify-center rounded-full bg-gray-300/20 px-0.5 text-xs text-white;
   }
 
   .scheduleMarker {
@@ -63,10 +63,21 @@ html {
       rgba(0, 0, 0, 1) 0%
     );
 
-    @apply -z-10 absolute top-0 h-full w-full;
+    @apply absolute top-0 -z-10 h-full w-full;
   }
 
-  .todoList_title{
-    @apply mt-4
+  .todoList_title {
+    @apply mt-4;
+  }
+
+  .font-sandstone {
+    font-family: "Sandstone", sans-serif;
+  }
+
+  .form_input {
+    @apply h-10 cursor-pointer rounded-md bg-[#7D848C] px-4 text-[#E6E6E6] transition-all hover:scale-105 hover:bg-[#E6E6E6] hover:text-[#4C5059];
+  }
+  .datepicker_number {
+    @apply bg-white/0 text-center text-[#4C5059];
   }
 }

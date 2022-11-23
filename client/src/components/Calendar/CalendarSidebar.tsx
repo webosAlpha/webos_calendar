@@ -49,7 +49,7 @@ function CalendarSidebar({ scheduleList }: Props) {
     setTodayScheduleList(newTodayScheduleList);
     setTomorrowScheduleList(newTomorrowScheduleList);
     setDayAfterTomorrowScheduleList(newDayAfterTomorrowScheduleList);
-  }, [selectedDate]);
+  }, [selectedDate, scheduleList]);
 
   const renderTodoList = useCallback((list: Schedule[], number: number) => {
     return (
@@ -75,30 +75,17 @@ function CalendarSidebar({ scheduleList }: Props) {
 
   return (
     <div
-      className={`-ml-10 h-full overflow-hidden whitespace-nowrap transition-all duration-700 ease-in-out ${
+      className={` h-full overflow-hidden whitespace-nowrap transition-all duration-700 ease-in-out ${
         sideBarOpen ? "w-80" : "w-0"
       }`}
     >
       <div className="relative flex aspect-video h-44 flex-col justify-end">
-        <div className="sidebar_bg ">
-          <Image
-            src={`${WEATHER_BASEURL}/${weather}.jpg`}
-            style={{
-              width: "100%",
-              height: "100%",
-              margin: "0 0 -7px 0",
-              opacity: "40%",
-            }}
-          />
-        </div>
-        <div className="mr-3 mb-3 flex flex-col items-end justify-evenly">
+        <img src={`${WEATHER_BASEURL}/${weather}.jpg`} className="opacity-70" />
+        <div className="absolute bottom-0 right-0 flex flex-col items-end justify-evenly p-2">
           <p className="text-4xl">
             {moment(selectedDate).locale("en-gb").format("YYYY")}
           </p>
-          <p>
-            {moment(selectedDate).locale("en").format("dddd, MMMM D")}
-            {/*{moment(selectedDate).locale("en").format("ll")}*/}
-          </p>
+          <p>{moment(selectedDate).locale("en").format("dddd, MMMM D")}</p>
         </div>
       </div>
       <div className="max-h-[75%] overflow-x-hidden px-5 scrollbar-hide">
