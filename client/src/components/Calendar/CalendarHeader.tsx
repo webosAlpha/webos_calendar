@@ -7,12 +7,12 @@ import { muteState } from "../../atoms/muteAtom";
 import { selectedDateState } from "../../atoms/selectedDateAtom";
 import { todayState } from "../../atoms/todayAtom";
 import { sidebarState } from "../../atoms/sidebarAtom";
+import { openEditFormState } from "../../atoms/editAtom";
 
 function CalendarHeader() {
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateState);
   const [mute, setMute] = useRecoilState(muteState);
-  const [sidebarOpen, setSidebarOpen] = useRecoilState(sidebarState);
-  const [editFormOpen, setEditFormOpen] = useState(false);
+  const setOpenEditForm = useSetRecoilState(openEditFormState);
   const today = useRecoilValue(todayState);
 
   const prevMonth = useCallback(() => {
@@ -28,8 +28,7 @@ function CalendarHeader() {
   }, [today]);
 
   const handleScheduleClick = useCallback(() => {
-    setSidebarOpen(false);
-    setEditFormOpen((prev) => !prev);
+    setOpenEditForm((prev) => !prev);
   }, []);
 
   const handleMuteClick = useCallback(() => {

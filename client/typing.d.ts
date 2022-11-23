@@ -7,7 +7,7 @@ export interface Schedule {
   day: string;
   startedTime: string; // "23:00"
   endedTime: string; // 끝 시간
-  category: CategoryList;
+  category: string;
 }
 
 export interface Weather {
@@ -23,4 +23,3 @@ export interface Weather {
 type WeatherList = "Clear" | "Rain" | "Clouds" | "Snow";
 
 
-type CategoryList = "회사" | "취미" | "학교";
