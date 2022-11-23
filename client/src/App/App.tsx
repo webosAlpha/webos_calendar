@@ -11,7 +11,7 @@ import axios from "axios";
 // @ts-ignore
 const RoutablePanels = Routable({ navigate: "navigate" }, Panels);
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 axios.defaults.baseURL = "http://localhost:8000";
 
@@ -39,4 +39,4 @@ const App = (props: any) => {
   );
 };
 
-export default ThemeDecorator(App);
+export default ThemeDecorator(App)

@@ -3,15 +3,14 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { openEditFormState } from "../../atoms/editAtom";
 import Icon from "@enact/sandstone/Icon";
 import { useForm } from "react-hook-form";
-import {
-  selectedDateState,
-  selectedEditDateState,
-} from "../../atoms/selectedDateAtom";
 import DatePicker from "./DatePicker";
 import TimePicker from "./TimePicker";
 import moment from "moment";
 import axios from "axios";
-import uuid from "react-uuid";
+import { QueryClient, useMutation } from "react-query";
+import { Schedule } from "../../../typing";
+import { selectedDateState } from "../../atoms/selectedDateAtom";
+import { queryClient } from "../../App/App";
 
 export interface Inputs {
   content: string;
@@ -27,21 +26,40 @@ export interface Inputs {
 
 function EditScheduleForm() {
   const [openEditForm, setOpenEditForm] = useRecoilState(openEditFormState);
+  const selectedDate = useRecoilValue(selectedDateState);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<Inputs>();
+
+  const mutation = useMutation(
+    (newTodo: Schedule) => {
+      return axios.post("/schedules", newTodo);
+    },
+    {
+      onSuccess: () => {
+        reset();
+        setOpenEditForm(false);
+        queryClient.invalidateQueries({
+          queryKey: ["schedules", selectedDate.clone().format("YYYY MM")],
+        });
+      },
+    }
+  );
 
   const onSubmit = handleSubmit((data) => {
     let date = `${data.year}-${data.month}-${data.day}`;
-    axios.post("/schedules", {
+    mutation.mutate({
       content: data.content, // 내용
       year: data.year,
       month: data.month,
-      week: moment(date).week() - moment(date).startOf("month").week() + 1,
+      week: String(
+        moment(date).week() - moment(date).startOf("month").week() + 1
+      ),
       day: data.day,
       startedTime: data.startedTime, // "23:00"
       endedTime: data.endedTime, // 끝 시간
@@ -64,27 +82,48 @@ function EditScheduleForm() {
       <form className="font-sandstone flex flex-1 px-12" onSubmit={onSubmit}>
         <div className="flex flex-1 flex-col justify-around">
           <label className="flex flex-col gap-y-2">
-            schedule
+            <span>
+              schedule
+              {errors.content && (
+                <span className="form_input_error">
+                  Please enter the content...
+                </span>
+              )}
+            </span>
             <input
-              {...register("content")}
-              placeholder="enter your schedule..."
+              {...register("content", { required: true })}
+              placeholder="enter the schedule..."
               className="form_input"
             />
           </label>
           <div className="flex gap-x-6">
             <label className="flex flex-1 flex-col gap-y-2">
-              category
+              <span>
+                category
+                {errors.category && (
+                  <span className="form_input_error">
+                    Please enter the category
+                  </span>
+                )}
+              </span>
               <input
-                {...register("category")}
-                placeholder="enter your schedule..."
+                {...register("category", { required: true })}
+                placeholder="enter the category..."
                 className="form_input"
               />
             </label>
             <label className="flex flex-1 flex-col gap-y-2">
-              location
+              <span>
+                location
+                {errors.location && (
+                  <span className="form_input_error">
+                    Please enter the correct location
+                  </span>
+                )}
+              </span>
               <input
                 {...register("location")}
-                placeholder="enter your schedule..."
+                placeholder="enter the meeting place..."
                 className="form_input"
               />
             </label>
