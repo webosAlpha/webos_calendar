@@ -8,6 +8,8 @@ export interface Schedule {
   startedTime: string; // "23:00"
   endedTime: string; // 끝 시간
   category: string;
+  location: string;
+  user_id: number;
 }
 
 export interface Weather {
@@ -21,5 +23,3 @@ export interface Weather {
 }
 
 type WeatherList = "Clear" | "Rain" | "Clouds" | "Snow";
-
-
