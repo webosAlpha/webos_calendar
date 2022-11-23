@@ -1,6 +1,9 @@
 const Schedule = require("../../schemas/schedule");
 const parse = require("./sheet.parse");
 const sheetData = require("../../sheetData.json");
+const moment = require("moment");
+
+let cnt = 0;
 
 const plzSchedule = async (req, res) => {
 	try {
@@ -52,7 +55,7 @@ const getSheet = async (req, res) => {
 const insertData = async (req, res) => {
 	try {
 		const obj = {
-			_id: req.body._id,
+			_id: Number(moment().format("YYMMDDHHmmss") + cnt),
 			user_id: req.body.user_id,
 			content: req.body.content,
 			year: req.body.year,
@@ -85,6 +88,31 @@ const deleteData = async (req, res) => {
 	}
 };
 
+const insertTest = async (req, res) => {
+	try {
+		const obj = {
+			_id: Number(moment().format("YYMMDDHHmmss") + cnt),
+			content: "test",
+			year: "2022",
+			month: "11",
+			week: "2",
+			day: "2",
+			startedTime: "10:00",
+			endedTime: "10:00",
+			category: "테스트",
+			location: "테스트",
+			user_id: 1,
+		};
+		const schedule = new Schedule(obj);
+		await schedule.save();
+		cnt++;
+		res.json({ message: "스케줄이 저장되었습니다." });
+	} catch (err) {
+		console.log(err);
+		res.json({ message: err.message });
+	}
+};
+
 module.exports = {
 	plzSheet,
 	plzSchedule,
@@ -92,4 +120,5 @@ module.exports = {
 	insertData,
 	deleteData,
 	getSheet,
+	insertTest,
 };
