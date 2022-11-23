@@ -21,6 +21,8 @@ export interface Inputs {
   category: string;
   startedTime: string;
   endedTime: string;
+  location: string;
+  user_id: number;
 }
 
 function EditScheduleForm() {
@@ -44,6 +46,8 @@ function EditScheduleForm() {
       startedTime: data.startedTime, // "23:00"
       endedTime: data.endedTime, // 끝 시간
       category: data.category,
+      location: data.location,
+      user_id: 1,
     });
   });
 
@@ -79,7 +83,7 @@ function EditScheduleForm() {
             <label className="flex flex-1 flex-col gap-y-2">
               location
               <input
-                {...register("category")}
+                {...register("location")}
                 placeholder="enter your schedule..."
                 className="form_input"
               />
