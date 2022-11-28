@@ -113,7 +113,7 @@ function makeJson() {
 		.day(dayConverter(dayOfTheWeek))
 		.format("DD");
 	var jsonSchedule = new Object();
-	
+
 	validateDate();
 
 	jsonSchedule._id = cnt;
@@ -130,7 +130,7 @@ function makeJson() {
 	jsonList.push(jsonSchedule);
 }
 
-function validateDate(){
+function validateDate() {
 	if (month.length < 2) {
 		month = "0" + month;
 	}
