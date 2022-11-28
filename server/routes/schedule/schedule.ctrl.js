@@ -16,6 +16,7 @@ const plzSchedule = async (req, res) => {
 
 const plzSheet = async (req, res) => {
 	try {
+		parse.getSheetData("webostest");
 		res.json(sheetData);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
@@ -38,7 +39,6 @@ const getData = async (req, res) => {
 const getSheet = async (req, res) => {
 	try {
 		const sheetList = [];
-
 		const year = req.query.year;
 		const month = req.query.month;
 
@@ -47,6 +47,15 @@ const getSheet = async (req, res) => {
 		});
 
 		res.json(sheetList);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+};
+
+const saveSheet = async (req, res) => {
+	try {
+		parse.getSheetData("webostest");
+		res.json({ message: "스케줄이 갱신되었습니다." });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -121,4 +130,5 @@ module.exports = {
 	deleteData,
 	getSheet,
 	insertTest,
+	saveSheet,
 };
