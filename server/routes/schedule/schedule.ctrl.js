@@ -2,7 +2,7 @@ const Schedule = require("../../schemas/schedule");
 const parse = require("./sheet.parse");
 const sheetData = require("../../sheetData.json");
 const moment = require("moment");
-const v1 = require("uuid");
+const { v1 } = require("uuid");
 
 const plzSchedule = async (req, res) => {
 	try {
