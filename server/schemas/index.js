@@ -23,4 +23,5 @@ module.exports = () => {
 
 	require("./schedule");
 	require("./weather");
+	require("./user");
 };
