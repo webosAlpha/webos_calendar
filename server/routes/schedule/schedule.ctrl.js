@@ -64,7 +64,7 @@ const insertData = async (req, res) => {
 	try {
 		const obj = {
 			_id: v1(),
-			user_id: req.body.user_id,
+			userId: req.body.userId,
 			content: req.body.content,
 			year: req.body.year,
 			month: req.body.month,
