@@ -96,7 +96,10 @@ function CalendarHeader() {
           <Button size="small">Monthly</Button>
         </div>
       </header>
-      <UserSelectionWindow openUserModal={openUserModal} />
+      <UserSelectionWindow
+        openUserModal={openUserModal}
+        setOpenUserModal={setOpenUserModal}
+      />
     </>
   );
 }

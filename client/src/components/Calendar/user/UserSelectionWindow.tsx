@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, {Dispatch, useState} from "react";
 import Icon from "@enact/sandstone/Icon";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import AddUserForm from "./AddUserForm";
 
 interface Props {
   openUserModal: boolean;
+  setOpenUserModal : Dispatch<React.SetStateAction<boolean>>
 }
 
-function UserSelectionWindow({ openUserModal }: Props) {
+function UserSelectionWindow({ openUserModal, setOpenUserModal }: Props) {
   const [openAddUserForm, setOpenAddUserForm] = useState(false);
 
   return (
@@ -17,7 +18,7 @@ function UserSelectionWindow({ openUserModal }: Props) {
       }`}
     >
       <div className="absolute top-12 right-12">
-        <Icon>closex</Icon>
+        <Icon onClick={() => setOpenUserModal(false)}>closex</Icon>
       </div>
       <span className="font-sandstone text-4xl">
         Select a profile to view schedules.

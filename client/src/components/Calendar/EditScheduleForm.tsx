@@ -43,8 +43,9 @@ function EditScheduleForm() {
       return axios.post("/schedules", newTodo);
     },
     {
-      onSuccess: () => {
+      onSuccess: (response) => {
         reset();
+        console.log(response);
         setOpenEditForm(false);
         queryClient.invalidateQueries({
           queryKey: ["schedules", selectedDate.clone().format("YYYY MM")],

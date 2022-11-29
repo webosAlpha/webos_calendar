@@ -25,7 +25,14 @@ function AddUserForm({ openAddUserForm, setOpenAddUserForm }: Props) {
 
   const mutation = useMutation(
     (newUser: User) => {
-      return axios.post("/users", newUser);
+      return axios
+        .post("/users", newUser)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     {
       onSuccess: () => {
@@ -43,7 +50,6 @@ function AddUserForm({ openAddUserForm, setOpenAddUserForm }: Props) {
       userName: "121212",
       password: "1234",
     });
-    console.log("전송")
   });
 
   return (
