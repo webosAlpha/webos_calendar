@@ -8,7 +8,7 @@ export interface Schedule {
   endedTime: string; // 끝 시간
   category: string;
   location: string;
-  user_id: number;
+  userId: string;
   _id?: number;
 }
 
@@ -26,7 +26,7 @@ export interface User {
   userName: string; //
   password: string;
   userColor: string; // RGB HexCode 값
-  _id?: number;
+  _id?: string;
 }
 
 type WeatherList = "Clear" | "Rain" | "Clouds" | "Snow";

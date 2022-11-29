@@ -22,7 +22,7 @@ function Calendar() {
 
   const getSchedule = useCallback(() => {
     return axios.get(
-      `/schedules?user_id=${userID}&year=${selectedDate
+      `/schedules?userId=${userID}&year=${selectedDate
         .clone()
         .format("YYYY")}&month=${selectedDate.clone().format("MM")}`
     );
@@ -30,7 +30,7 @@ function Calendar() {
 
   const getSheetSchedule = useCallback(() => {
     return axios.get(
-      `/schedules/sheet?user_id=${userID}&year=${selectedDate
+      `/schedules/sheet?userId=${userID}&year=${selectedDate
         .clone()
         .format("YYYY")}&month=${selectedDate.clone().format("MM")}`
     );
