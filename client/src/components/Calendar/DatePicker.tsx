@@ -1,21 +1,15 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import {
-  selectedDateState,
-  selectedEditDateState,
-} from "../../atoms/selectedDateAtom";
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { selectedDateState } from "../../atoms/selectedDateAtom";
+import { UseFormSetValue } from "react-hook-form";
 import { Inputs } from "./EditScheduleForm";
-import Icon from "@enact/sandstone/Icon";
 import AddDateButton from "./AddDateButton";
 import { openEditFormState } from "../../atoms/editAtom";
 import SubtractDateButton from "./SubtranctDateButton";
-import {QueryClient} from "react-query";
 
 interface Props {
   setValue: UseFormSetValue<Inputs>;
 }
-
 
 function DatePicker({ setValue }: Props) {
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateState);

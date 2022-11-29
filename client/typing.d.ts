@@ -22,4 +22,11 @@ export interface Weather {
   lowestTmp: string;
 }
 
+export interface User {
+  userName: string; //
+  password: string;
+  userColor: string; // RGB HexCode 값
+  _id?: number;
+}
+
 type WeatherList = "Clear" | "Rain" | "Clouds" | "Snow";

@@ -79,9 +79,44 @@ html {
   }
 
   .form_input_error {
-    @apply inline-block text-xs text-amber-200 ml-2;
+    @apply ml-2 inline-block text-xs text-amber-200;
   }
   .datepicker_number {
     @apply bg-white/0 text-center text-[#4C5059];
+  }
+
+  .map_container {
+    top: calc(50% - 0.25rem);
+    @apply absolute right-2 flex -translate-y-1/2 pt-2;
+  }
+
+  .map_pin {
+    @apply h-6 hover:scale-105 hover:cursor-pointer;
+  }
+
+  .map {
+    @apply absolute left-1/2 -top-2 z-50 flex hidden -translate-y-1/2 -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-sm bg-black px-2 text-sm hover:flex hover:cursor-pointer hover:underline after:hover:flex;
+  }
+
+  .map:after {
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 14px solid #000;
+    clear: both;
+
+    @apply absolute left-1/2 top-5 h-0 w-0 -translate-x-1/2 content-[""];
+  }
+
+  .location_iframe_wrapper {
+    width: 2900px;
+    aspect-ratio: 16 / 9;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .location_iframe_wrapper iframe {
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
   }
 }

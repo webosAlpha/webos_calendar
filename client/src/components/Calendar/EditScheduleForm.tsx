@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { openEditFormState } from "../../atoms/editAtom";
 import Icon from "@enact/sandstone/Icon";
@@ -11,6 +11,7 @@ import { QueryClient, useMutation } from "react-query";
 import { Schedule } from "../../../typing";
 import { selectedDateState } from "../../atoms/selectedDateAtom";
 import { queryClient } from "../../App/App";
+import { userIDState } from "../../atoms/userAtom";
 
 export interface Inputs {
   content: string;
@@ -27,6 +28,7 @@ export interface Inputs {
 function EditScheduleForm() {
   const [openEditForm, setOpenEditForm] = useRecoilState(openEditFormState);
   const selectedDate = useRecoilValue(selectedDateState);
+  const userID = useRecoilValue(userIDState);
 
   const {
     register,
@@ -51,27 +53,30 @@ function EditScheduleForm() {
     }
   );
 
-  const onSubmit = handleSubmit((data) => {
-    let date = `${data.year}-${data.month}-${data.day}`;
-    mutation.mutate({
-      content: data.content, // 내용
-      year: data.year,
-      month: data.month,
-      week: String(
-        moment(date).week() - moment(date).startOf("month").week() + 1
-      ),
-      day: data.day,
-      startedTime: data.startedTime, // "23:00"
-      endedTime: data.endedTime, // 끝 시간
-      category: data.category,
-      location: data.location,
-      user_id: 1,
-    });
-  });
+  const onSubmit = useCallback(
+    handleSubmit((data) => {
+      let date = `${data.year}-${data.month}-${data.day}`;
+      mutation.mutate({
+        content: data.content, // 내용
+        year: data.year,
+        month: data.month,
+        week: String(
+          moment(date).week() - moment(date).startOf("month").week() + 1
+        ),
+        day: data.day,
+        startedTime: data.startedTime, // "23:00"
+        endedTime: data.endedTime, // 끝 시간
+        category: data.category,
+        location: data.location,
+        user_id: userID,
+      });
+    }),
+    []
+  );
 
   return (
     <div
-      className={`absolute bottom-0 flex w-full flex-col overflow-hidden bg-black/80 transition-all duration-500 ${
+      className={`absolute bottom-0 z-50 flex w-full flex-col overflow-hidden bg-black/80 transition-all duration-500 ${
         openEditForm ? "h-64 py-4" : "h-0 p-0"
       }`}
     >

@@ -1,13 +1,16 @@
-import React from "react";
+import React, { memo, useEffect, useMemo } from "react";
 
 function CalendarDays() {
 
 
-
+  const days = useMemo(
+    () => ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
+    []
+  );
 
   return (
-    <div className="flex w-full h-[8%] items-center">
-      {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((days) => (
+    <div className="flex h-[8%] w-full items-center">
+      {days.map((days) => (
         <div
           key={days}
           className={`w-full text-center ${
@@ -21,4 +24,4 @@ function CalendarDays() {
   );
 }
 
-export default CalendarDays;
+export default memo(CalendarDays);
