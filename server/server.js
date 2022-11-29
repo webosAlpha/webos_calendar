@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/schedules", require("./routes/schedule/scheduleRouter")); // 스케줄 router. 프론트에서 /schedules 위치로 요청을 보내야 한다.
 // app.use("/weathers", require("./routes/weather/weatherRouter"));
+app.use("/users", require("./routes/user/userRouter"));
 
 app.listen(8000, () => {
 	console.log("Server started on port 8000");
