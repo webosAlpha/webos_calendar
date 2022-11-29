@@ -14,6 +14,8 @@ var weather = "";
 var maxCelTemp = 0;
 var minCelTemp = 0;
 
+var jsonList = [];
+
 function getWeather(latitude, longitude) {
 	fetch(
 		`https://api.openweathermap.org/data/2.5/forecast?lat=37&lon=126&appid=` +
@@ -25,8 +27,9 @@ function getWeather(latitude, longitude) {
 		.then((json) => {
 			for (let index = -1; ++index < 40; ) {
 				// 해당 날짜의 최소, 최대기온 구하기
+				setTemps(index, json)
 				if (json.list[index].dt_txt.split(" ")[0] == currentDate) {
-					setTemps(index, json);
+					//setTemps(index, json);
 				} else {
 					if (index > 0) {
 						setParams(index, json);
@@ -48,11 +51,11 @@ function setTemps(index, json) {
 	if (json.list[index].main.temp_min < minTemp) {
 		minTemp = json.list[index].main.temp_min;
 	}
+	
 }
 
 function setParams(index, json) {
-	maxCelTemp = (maxTemp - 273.15).toFixed(2);
-	minCelTemp = (minTemp - 273.15).toFixed(2);
+	
 	weather = json.list[index].weather[0].main;
 	year = currentDate.split("-")[0];
 	month = currentDate.split("-")[1];
@@ -73,8 +76,12 @@ function initializeTemp() {
 	minTemp = INF;
 }
 
-//Json형태로 결합, DBserver 전송
+/*
+json형태로 결합
+*/
 function makeJson() {
+	maxCelTemp = (maxTemp - 273.15).toFixed(2);
+	minCelTemp = (minTemp - 273.15).toFixed(2);
 	var jsonWeather = new Object();
 
 	jsonWeather.year = year;
@@ -83,9 +90,19 @@ function makeJson() {
 	jsonWeather.weather = weather;
 	jsonWeather.highestTmp = maxCelTemp;
 	jsonWeather.lowestTmp = minCelTemp;
+	jsonList.push(jsonWeather);
+	
+	makeJsonFile();
+}
 
-	//const Test = new Sheet(jsonWeather);
-	//Test.save();
+/*
+json 파일 생성
+*/
+function makeJsonFile() {
+	const fs = require("fs");
+	const jdata = JSON.stringify(jsonList);
+	const jsdata = jdata.replace(/\\/g, "");
+	fs.writeFileSync("../../weatherData.json", jsdata);
 }
 
 function load() {
@@ -93,3 +110,5 @@ function load() {
 }
 
 module.exports = { load };
+
+getWeather();

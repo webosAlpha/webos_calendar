@@ -20,7 +20,9 @@ var weekOfYear;
 const moment = require("moment");
 let year = "2022";
 
-// Url 파싱
+/*
+Url 파싱
+*/
 function parseUrl(data) {
 	var parseData = data.split('rows":[')[1];
 	parseData = parseData.split('}],"parsedNumHeaders')[0];
@@ -28,7 +30,9 @@ function parseUrl(data) {
 	return parseData;
 }
 
-// 월, 주차, 카테고리 파싱
+/*
+월, 주차, 카테고리 파싱
+*/
 function parseMonthWeekCate(monthWeekCate) {
 	var jsonArr = JSON.parse(monthWeekCate);
 	var jsonObjVal = []; //jsonObj value 담을 배열
@@ -51,7 +55,6 @@ function parseMonthWeekCate(monthWeekCate) {
 function parseSchedule(data) {
 	for (var i = 1; i < 8; i++) {
 		//요일별로 돌기
-		dayOfTheWeek = parseDayOfTheWeek(data, i);
 		for (var j = 2; j < data.length; j++) {
 			//시간별로 돌기
 			dataArr = JSON.parse(data[j]); //data[j] 시간인덱스
@@ -60,7 +63,7 @@ function parseSchedule(data) {
 				dataArr[i][Object.keys(dataArr[i])[0]] != null
 			) {
 				content = dataArr[i][Object.keys(dataArr[i])[0]]; //dataArr[i] 요일인덱스
-
+				
 				if (content != beforeSchedule) {
 					//새로운 스케줄
 					if (startTime != "") {
@@ -69,6 +72,8 @@ function parseSchedule(data) {
 					beforeSchedule = content;
 					startTime = parseStartTime(dataArr);
 					endTime = parseEndTime(dataArr);
+					dayOfTheWeek = parseDayOfTheWeek(data, i);
+					
 				} else {
 					//이전과 동일 스케줄
 					endTime = parseEndTime(dataArr);
@@ -79,14 +84,18 @@ function parseSchedule(data) {
 	makeJson();
 }
 
-//해당 스케줄의 요일 파싱
+/*
+해당 스케줄의 요일 파싱
+*/
 function parseDayOfTheWeek(data, j) {
 	dayOfTheWeek = data[1].split('v":"')[j];
 	dayOfTheWeek = dayOfTheWeek.split('"}')[0];
 	return dayOfTheWeek;
 }
 
-//해당 스케줄의 시작시간 파싱
+/*
+해당 스케줄의 시작시간 파싱
+*/
 function parseStartTime(dataArr) {
 	startTime = JSON.stringify(dataArr[0]);
 	startTime = startTime.split('{"v":"')[1];
@@ -94,7 +103,9 @@ function parseStartTime(dataArr) {
 	return startTime;
 }
 
-//해당 스케줄의 종료시간 파싱
+/*
+해당 스케줄의 종료시간 파싱
+*/
 function parseEndTime(dataArr) {
 	endTime = JSON.stringify(dataArr[0]);
 	endTime = endTime.split("~")[1];
@@ -102,21 +113,24 @@ function parseEndTime(dataArr) {
 	return endTime;
 }
 
-//Json형태로 결합, DBserver 전송
+/*
+json형태로 결합
+*/
 function makeJson() {
 	cnt += 1;
 	var year = "2022";
-	weekOfYear = moment(`${year}-0${month}`).week() + (Number(week) - 1);
+	weekOfYear = moment(`${year}-${month}`).week() + (Number(week) - 1);
 	day = moment(year)
 		.week(weekOfYear)
 		.startOf("week")
 		.day(dayConverter(dayOfTheWeek))
 		.format("DD");
+	
 	var jsonSchedule = new Object();
-
+	
 	validateDate();
 
-	jsonSchedule._id = cnt.toString();
+	jsonSchedule._id = cnt;
 	jsonSchedule.content = beforeSchedule.split(", ")[0];
 	jsonSchedule.year = "2022";
 	jsonSchedule.month = month;
@@ -128,9 +142,10 @@ function makeJson() {
 	jsonSchedule.location = beforeSchedule.split(", ")[1];
 	jsonSchedule.user_id = 1;
 	jsonList.push(jsonSchedule);
+	makeJsonFile();
 }
 
-function validateDate() {
+function validateDate(){
 	if (month.length < 2) {
 		month = "0" + month;
 	}
@@ -142,11 +157,14 @@ function validateDate() {
 	}
 }
 
+/*
+json 파일 생성
+*/
 function makeJsonFile() {
 	const fs = require("fs");
 	const jdata = JSON.stringify(jsonList);
 	const jsdata = jdata.replace(/\\/g, "");
-	fs.writeFileSync("sheetData.json", jsdata);
+	fs.writeFileSync("../../sheetData.json", jsdata);
 }
 
 function dayConverter(dayOfWeek) {
@@ -178,7 +196,6 @@ const getSheetData = async (sheetName) => {
 		monthWeekCate = data[0].split('{"c":')[1]; // 첫 행 파싱
 		parseMonthWeekCate(monthWeekCate);
 		parseSchedule(data);
-		makeJsonFile();
 	} catch (error) {
 		console.log(error);
 	}
