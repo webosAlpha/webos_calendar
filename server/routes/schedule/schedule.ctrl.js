@@ -26,8 +26,13 @@ const getData = async (req, res) => {
 	try {
 		const year = req.query.year;
 		const month = req.query.month;
+		const userId = req.query.userId;
 
-		const schedule = await Schedule.find({ year: year, month: month });
+		const schedule = await Schedule.find({
+			year: year,
+			month: month,
+			userId: userId,
+		});
 
 		res.json(schedule);
 	} catch (err) {
@@ -109,7 +114,7 @@ const insertTest = async (req, res) => {
 			endedTime: "10:00",
 			category: "테스트",
 			location: "테스트",
-			user_id: 1,
+			userId: "1",
 		};
 		const schedule = new Schedule(obj);
 		await schedule.save();
