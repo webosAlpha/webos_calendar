@@ -89,10 +89,6 @@ function EditScheduleForm() {
     [userID]
   );
 
-  useEffect(() => {
-    console.log("userID", userID, 1);
-  });
-
   return (
     <div
       className={`absolute bottom-0 z-50 flex w-full flex-col overflow-hidden bg-black/80 transition-all duration-500 ${

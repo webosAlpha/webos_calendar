@@ -8,13 +8,14 @@ import { AddUser } from "./AddUser";
 import { useForm } from "react-hook-form";
 import { userIDState } from "../../../atoms/userAtom";
 import { useRecoilState } from "recoil";
+import { UserLoginForm } from "./UserLoginForm";
 
 interface Props {
   openUserModal: boolean;
   setOpenUserModal: Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface Inputs {
+export interface LoginInputs {
   password: string;
 }
 
@@ -47,23 +48,22 @@ function UserSelectionWindow({ openUserModal, setOpenUserModal }: Props) {
     reset,
     setError,
     unregister,
-  } = useForm<Inputs>();
+  } = useForm<LoginInputs>();
 
   const Login = async (userData: UserData) => {
-    console.log("userData", userData);
-
     await axios
       .post("/users/login", userData)
       .then(function (response) {
         if (response.data.length === 0) {
-          console.log("데이터 없음");
           setError("password", {
             type: "value",
           });
         } else {
-          console.log("데이터 있음");
-          console.log(response.data[0]._id);
           setUser(response.data[0]._id);
+          setOpenUserModal(false);
+          setSelectedLoginUser("");
+          setOpenLoginForm(false);
+          reset();
         }
       })
       .catch(function (error) {
@@ -89,7 +89,15 @@ function UserSelectionWindow({ openUserModal, setOpenUserModal }: Props) {
       }`}
     >
       <div className="absolute top-12 right-12">
-        <Icon onClick={() => setOpenUserModal(false)}>closex</Icon>
+        <Icon
+          onClick={() => {
+            setOpenUserModal(false);
+            setSelectedLoginUser("");
+            setOpenLoginForm(false);
+          }}
+        >
+          closex
+        </Icon>
       </div>
       <span className="font-sandstone text-4xl">
         Select a profile to view schedules.
@@ -120,25 +128,12 @@ function UserSelectionWindow({ openUserModal, setOpenUserModal }: Props) {
           />
         )}
         {openLoginForm && (
-          <div className="absolute -bottom-4 left-1/2 flex -translate-x-1/2 translate-y-full flex-col gap-y-2">
-            {selectedLoginUserName}에 로그인 하려면 비밀번호를 입력하세요
-            <form onSubmit={onSubmit}>
-              <label className="mx-auto flex w-72 flex-1 flex-col gap-y-1">
-                <span></span>
-                <input
-                  {...register("password", { required: true })}
-                  placeholder="enter the password..."
-                  type="password"
-                  className="user_form_input"
-                />
-                {errors.password && (
-                  <span className="form_input_error">
-                    Please enter the correct password
-                  </span>
-                )}
-              </label>
-            </form>
-          </div>
+          <UserLoginForm
+            selectedLoginUserName={selectedLoginUserName}
+            onSubmit={onSubmit}
+            register={register("password", { required: true })}
+            errors={errors}
+          />
         )}
       </section>
     </div>

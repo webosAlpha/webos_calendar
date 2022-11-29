@@ -21,6 +21,12 @@ function Calendar() {
   const userID = useRecoilValue(userIDState);
 
   const getSchedule = useCallback(() => {
+    console.log(
+      "getUrl : ",
+      `/schedules?userId=${userID}&year=${selectedDate
+        .clone()
+        .format("YYYY")}&month=${selectedDate.clone().format("MM")}`
+    );
     return axios.get(
       `/schedules?userId=${userID}&year=${selectedDate
         .clone()
@@ -41,7 +47,6 @@ function Calendar() {
     () =>
       axios.all([getSchedule(), getSheetSchedule()]).then(
         axios.spread((res1, res2) => {
-          console.log([...res1.data, ...res2.data]);
           return [...res1.data, ...res2.data];
         })
       )
