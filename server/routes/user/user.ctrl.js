@@ -1,5 +1,5 @@
 const User = require("../../schemas/user");
-const v1 = require("uuid");
+const { v1 } = require("uuid");
 
 const getUser = async (req, res) => {
 	try {
