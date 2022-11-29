@@ -1,11 +1,19 @@
-const Schedule = require("../../schemas/schedule");
 const User = require("../../schemas/user");
+const { v1 } = require("uuid");
 
 const getUser = async (req, res) => {
 	try {
-		const id = req.query._id;
-		const user = await User.find({ _id: id });
-		res.json(user);
+		const jsonList = [];
+		const user = await User.find();
+		user.forEach((e) => {
+			const obj = new Object();
+			obj.userName = e.userName;
+			obj.userColor = e.userColor;
+
+			jsonList.push(obj);
+		});
+
+		res.json(jsonList);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -14,7 +22,7 @@ const getUser = async (req, res) => {
 const addUser = async (req, res) => {
 	try {
 		const obj = {
-			_id: req.body._id,
+			_id: v1(),
 			userName: req.body.userName,
 			password: req.body.password,
 			userColor: req.body.userColor,
@@ -23,7 +31,17 @@ const addUser = async (req, res) => {
 		await user.save();
 		res.json({ message: "유저가 등록되었습니다." });
 	} catch (err) {
-		console.log(err);
+		res.json({ message: err.message });
+	}
+};
+
+const userData = async (req, res) => {
+	try {
+		userName = req.body.userName;
+		password = req.body.password;
+		const user = await User.find({ userName: userName, password: password });
+		res.json(user);
+	} catch (err) {
 		res.json({ message: err.message });
 	}
 };
@@ -31,4 +49,5 @@ const addUser = async (req, res) => {
 module.exports = {
 	getUser,
 	addUser,
+	userData,
 };

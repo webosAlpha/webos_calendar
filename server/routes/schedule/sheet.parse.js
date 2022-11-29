@@ -116,7 +116,7 @@ function makeJson() {
 
 	validateDate();
 
-	jsonSchedule._id = cnt;
+	jsonSchedule._id = cnt.toString();
 	jsonSchedule.content = beforeSchedule.split(", ")[0];
 	jsonSchedule.year = "2022";
 	jsonSchedule.month = month;
