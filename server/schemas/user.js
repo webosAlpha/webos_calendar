@@ -4,7 +4,7 @@ const { Schema } = mongoose; // 비구조 할당
 
 const userSchema = new Schema({
 	_id: {
-		type: Number,
+		type: String,
 		required: true,
 	},
 
@@ -18,7 +18,7 @@ const userSchema = new Schema({
 		required: true,
 	},
 
-	usercolor: {
+	userColor: {
 		type: String,
 		required: true,
 	},
