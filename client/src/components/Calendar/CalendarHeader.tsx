@@ -8,6 +8,7 @@ import { selectedDateState } from "../../atoms/selectedDateAtom";
 import { todayState } from "../../atoms/todayAtom";
 import { sidebarState } from "../../atoms/sidebarAtom";
 import { openEditFormState } from "../../atoms/editAtom";
+import UserSelectionWindow from "./user/UserSelectionWindow";
 
 function CalendarHeader() {
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateState);
@@ -95,16 +96,7 @@ function CalendarHeader() {
           <Button size="small">Monthly</Button>
         </div>
       </header>
-      <div
-        className={`absolute left-1/2 top-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col  items-center justify-center overflow-hidden rounded-lg bg-black transition-all duration-300 ${
-          openUserModal ? "h-full w-full" : "h-0 w-0"
-        }`}
-      >
-        <span className="font-sandstone text-4xl">
-          Select a profile to view schedules.
-        </span>
-        <div></div>
-      </div>
+      <UserSelectionWindow openUserModal={openUserModal} />
     </>
   );
 }

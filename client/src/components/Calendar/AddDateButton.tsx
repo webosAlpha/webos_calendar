@@ -1,8 +1,5 @@
 import React, { memo, useCallback } from "react";
 import Icon from "@enact/sandstone/Icon";
-import moment from "moment";
-import { UseFormSetValue } from "react-hook-form";
-import { Inputs } from "./EditScheduleForm";
 
 interface Props {
   onAddClick: () => void;
