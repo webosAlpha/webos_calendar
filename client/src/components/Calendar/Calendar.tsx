@@ -26,7 +26,7 @@ function Calendar() {
         .clone()
         .format("YYYY")}&month=${selectedDate.clone().format("MM")}`
     );
-  }, [selectedDate]);
+  }, [selectedDate, userID]);
 
   const getSheetSchedule = useCallback(() => {
     return axios.get(
@@ -34,10 +34,10 @@ function Calendar() {
         .clone()
         .format("YYYY")}&month=${selectedDate.clone().format("MM")}`
     );
-  }, [selectedDate]);
+  }, [selectedDate, userID]);
 
   const { data: scheduleList } = useQuery<Schedule[]>(
-    ["schedules", selectedDate.clone().format("YYYY MM")],
+    ["schedules", selectedDate.clone().format("YYYY MM"), userID],
     () =>
       axios.all([getSchedule(), getSheetSchedule()]).then(
         axios.spread((res1, res2) => {

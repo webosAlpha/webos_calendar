@@ -6,6 +6,8 @@ import axios from "axios";
 import { UserList } from "./UserList";
 import { AddUser } from "./AddUser";
 import { useForm } from "react-hook-form";
+import { userIDState } from "../../../atoms/userAtom";
+import { useRecoilState } from "recoil";
 
 interface Props {
   openUserModal: boolean;
@@ -16,13 +18,18 @@ interface Inputs {
   password: string;
 }
 
+interface UserData {
+  userName: string;
+  password: string;
+}
+
 function UserSelectionWindow({ openUserModal, setOpenUserModal }: Props) {
   const [openAddUserForm, setOpenAddUserForm] = useState(false);
   const [selectedUserColor, setSelectedUserColor] = useState("#000000");
   const [selectedUserName, setSelectedUserName] = useState("");
   const [openLoginForm, setOpenLoginForm] = useState(false);
   const [selectedLoginUserName, setSelectedLoginUser] = useState("");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useRecoilState(userIDState);
 
   const { data: userList } = useQuery<User[]>(["userList"], () =>
     axios.get("/users").then((response) => {
@@ -38,23 +45,35 @@ function UserSelectionWindow({ openUserModal, setOpenUserModal }: Props) {
     getValues,
     watch,
     reset,
+    setError,
+    unregister,
   } = useForm<Inputs>();
 
-  const mutation = useMutation(
-    (userData: { userName: string; password: string }) => {
-      return axios
-        .post("/users/login", userData)
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    {
-      // onSuccess: () => {setUser()},
-    }
-  );
+  const Login = async (userData: UserData) => {
+    console.log("userData", userData);
+
+    await axios
+      .post("/users/login", userData)
+      .then(function (response) {
+        if (response.data.length === 0) {
+          console.log("데이터 없음");
+          setError("password", {
+            type: "value",
+          });
+        } else {
+          console.log("데이터 있음");
+          console.log(response.data[0]._id);
+          setUser(response.data[0]._id);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const mutation = useMutation((userData: UserData) => {
+    return Login(userData);
+  });
 
   const onSubmit = handleSubmit((data) => {
     mutation.mutate({
@@ -76,15 +95,18 @@ function UserSelectionWindow({ openUserModal, setOpenUserModal }: Props) {
         Select a profile to view schedules.
       </span>
       <section className="relative mt-8 flex gap-x-8">
-        {userList?.map((user) => (
-          <UserList
-            user={user}
-            userClick={() => {
-              setOpenLoginForm(true);
-              setSelectedLoginUser(user.userName);
-            }}
-          />
-        ))}
+        {userList?.map((user) => {
+          return (
+            <UserList
+              key={user.userColor}
+              user={user}
+              userClick={() => {
+                setOpenLoginForm(true);
+                setSelectedLoginUser(user.userName);
+              }}
+            />
+          );
+        })}
 
         {userList?.length! < 4 && (
           <AddUser
@@ -102,19 +124,18 @@ function UserSelectionWindow({ openUserModal, setOpenUserModal }: Props) {
             {selectedLoginUserName}에 로그인 하려면 비밀번호를 입력하세요
             <form onSubmit={onSubmit}>
               <label className="mx-auto flex w-72 flex-1 flex-col gap-y-1">
-                <span>
-                  {errors.password && (
-                    <span className="form_input_error">
-                      Please enter the correct password
-                    </span>
-                  )}
-                </span>
+                <span></span>
                 <input
                   {...register("password", { required: true })}
                   placeholder="enter the password..."
                   type="password"
                   className="user_form_input"
                 />
+                {errors.password && (
+                  <span className="form_input_error">
+                    Please enter the correct password
+                  </span>
+                )}
               </label>
             </form>
           </div>
