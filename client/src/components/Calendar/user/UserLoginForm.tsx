@@ -26,6 +26,11 @@ export function UserLoginForm(props: {
             </span>
           )}
         </label>
+        <input
+          value="add"
+          className="user_form_input self-center"
+          type="submit"
+        />
       </form>
     </div>
   );
