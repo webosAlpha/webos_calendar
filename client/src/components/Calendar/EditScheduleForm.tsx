@@ -71,9 +71,27 @@ function EditScheduleForm() {
         location: data.location,
         userId: userID,
       });
+      console.log({
+        content: data.content, // 내용
+        year: data.year,
+        month: data.month,
+        week: String(
+          moment(date).week() - moment(date).startOf("month").week() + 1
+        ),
+        day: data.day,
+        startedTime: data.startedTime, // "23:00"
+        endedTime: data.endedTime, // 끝 시간
+        category: data.category,
+        location: data.location,
+        userId: userID,
+      });
     }),
-    []
+    [userID]
   );
+
+  useEffect(() => {
+    console.log("userID", userID, 1);
+  });
 
   return (
     <div
