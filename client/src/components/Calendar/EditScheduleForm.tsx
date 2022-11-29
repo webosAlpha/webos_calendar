@@ -22,7 +22,7 @@ export interface Inputs {
   startedTime: string;
   endedTime: string;
   location: string;
-  user_id: number;
+  userId: number;
 }
 
 function EditScheduleForm() {
@@ -43,8 +43,9 @@ function EditScheduleForm() {
       return axios.post("/schedules", newTodo);
     },
     {
-      onSuccess: () => {
+      onSuccess: (response) => {
         reset();
+        console.log(response);
         setOpenEditForm(false);
         queryClient.invalidateQueries({
           queryKey: ["schedules", selectedDate.clone().format("YYYY MM")],
@@ -68,7 +69,7 @@ function EditScheduleForm() {
         endedTime: data.endedTime, // 끝 시간
         category: data.category,
         location: data.location,
-        user_id: userID,
+        userId: userID,
       });
     }),
     []

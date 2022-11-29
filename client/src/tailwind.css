@@ -119,4 +119,8 @@ html {
     width: 100%;
     pointer-events: none;
   }
+
+  .user_form_input {
+    @apply h-8 cursor-pointer text-sm rounded-md bg-[#7D848C] px-4 text-[#E6E6E6] transition-all hover:scale-105 hover:bg-[#E6E6E6] hover:text-[#4C5059];
+  }
 }
