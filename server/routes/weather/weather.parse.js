@@ -18,7 +18,7 @@ var jsonList = [];
 
 function getWeather(latitude, longitude) {
 	fetch(
-		`https://api.openweathermap.org/data/2.5/forecast?lat=37&lon=126&appid=` +
+		`https://api.openweathermap.org/data/2.5/forecast?lat=37.45&lon=126.659&appid=` +
 			API_ID,
 	)
 		.then((response) => {
@@ -55,8 +55,7 @@ function setTemps(index, json) {
 }
 
 function setParams(index, json) {
-	
-	weather = json.list[index].weather[0].main;
+	weather = json.list[index-2].weather[0].main; //index-2: 낮 12시 기준
 	year = currentDate.split("-")[0];
 	month = currentDate.split("-")[1];
 	day = currentDate.split("-")[2];
