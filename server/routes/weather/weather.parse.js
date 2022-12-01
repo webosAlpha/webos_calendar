@@ -27,7 +27,7 @@ function getWeather(latitude, longitude) {
 		.then((json) => {
 			for (let index = -1; ++index < 40; ) {
 				// 해당 날짜의 최소, 최대기온 구하기
-				setTemps(index, json)
+				setTemps(index, json);
 				if (json.list[index].dt_txt.split(" ")[0] == currentDate) {
 					//setTemps(index, json);
 				} else {
@@ -51,11 +51,10 @@ function setTemps(index, json) {
 	if (json.list[index].main.temp_min < minTemp) {
 		minTemp = json.list[index].main.temp_min;
 	}
-	
 }
 
 function setParams(index, json) {
-	weather = json.list[index-2].weather[0].main; //index-2: 낮 12시 기준
+	weather = json.list[index - 2].weather[0].main; //index-2: 낮 12시 기준
 	year = currentDate.split("-")[0];
 	month = currentDate.split("-")[1];
 	day = currentDate.split("-")[2];
@@ -90,7 +89,7 @@ function makeJson() {
 	jsonWeather.highestTmp = maxCelTemp;
 	jsonWeather.lowestTmp = minCelTemp;
 	jsonList.push(jsonWeather);
-	
+
 	makeJsonFile();
 }
 
@@ -101,7 +100,7 @@ function makeJsonFile() {
 	const fs = require("fs");
 	const jdata = JSON.stringify(jsonList);
 	const jsdata = jdata.replace(/\\/g, "");
-	fs.writeFileSync("../../weatherData.json", jsdata);
+	fs.writeFileSync("weatherData.json", jsdata);
 }
 
 function load() {
@@ -109,5 +108,3 @@ function load() {
 }
 
 module.exports = { load };
-
-getWeather();
