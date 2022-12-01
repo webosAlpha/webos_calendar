@@ -1,13 +1,5 @@
 import moment from "moment/moment";
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import Image from "@enact/sandstone/Image";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import CalendarTodoList from "./CalendarTodoList";
 import { Schedule } from "../../../typing";
 import EmptyTodo from "./EmptyTodo";
@@ -18,6 +10,9 @@ import { weatherState } from "../../atoms/weatherAtom";
 import { sidebarState } from "../../atoms/sidebarAtom";
 import uuid from "react-uuid";
 import { locationIframeState, locationState } from "../../atoms/locationAtom";
+import { CloudIcon } from "@heroicons/react/24/outline";
+// @ts-ignore
+import { WiDaySunny, WiCloudy, WiSnow, WiRain } from "weather-icons-react";
 
 interface Props {
   scheduleList: Schedule[] | undefined;
@@ -91,6 +86,18 @@ function CalendarSidebar({ scheduleList }: Props) {
 
   const renderEmptyTodo = useMemo(() => <EmptyTodo />, []);
 
+  const weatherIconConverter = {
+    Clear: <WiDaySunny size={48} />,
+    Clouds: <WiCloudy size={48} />,
+    Rain: <WiRain size={48} />,
+    Snow: <WiSnow size={48} />,
+  };
+
+  let weatherIcon =
+    weatherIconConverter[
+      weather.weather as "Clear" | "Rain" | "Clouds" | "Snow"
+    ];
+
   return (
     <div
       className={` h-full overflow-hidden whitespace-nowrap transition-all duration-700 ease-in-out ${
@@ -98,12 +105,25 @@ function CalendarSidebar({ scheduleList }: Props) {
       }`}
     >
       <div className="relative flex aspect-video h-44 flex-col justify-end">
-        <img src={`${WEATHER_BASEURL}/${weather}.jpg`} className="opacity-70" />
+        <img
+          src={`${WEATHER_BASEURL}/${weather.weather}.jpg`}
+          className="opacity-70"
+        />
+        {weather.highestTmp ? (
+          <div className="absolute bottom-0 left-0 flex items-center gap-x-1.5 p-1 text-sm">
+            <p>{weatherIcon}</p>
+            <div className="flex-col">
+              <p>High : {weather.highestTmp}</p>
+              <p>Low : {weather.lowestTmp}</p>
+            </div>
+          </div>
+        ) : null}
+
         <div className="absolute bottom-0 right-0 flex flex-col items-end justify-evenly p-2">
           <p className="text-4xl">
             {moment(selectedDate).locale("en-gb").format("YYYY")}
           </p>
-          <p>{moment(selectedDate).locale("en").format("dddd, MMMM D")}</p>
+          <p>{moment(selectedDate).locale("en").format("ddd, MMMM D")}</p>
         </div>
       </div>
 

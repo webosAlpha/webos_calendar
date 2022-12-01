@@ -4,18 +4,38 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedDateState } from "../../atoms/selectedDateAtom";
 import { WEATHER_BASEURL } from "../../utils/Utils";
 import { weatherState } from "../../atoms/weatherAtom";
+import { useQuery } from "react-query";
+import { Weather } from "../../../typing";
+import axios from "axios";
 
 const WeatherPanel = () => {
   const selectedDate = useRecoilValue(selectedDateState);
-
-  /* 아래 데이터는 db 구축시 제거될 데이터입니다*/
   const [weather, setWeather] = useRecoilState(weatherState);
-  const [dummyCount, setDummyCount] = useState(0);
-  const weatherList = ["Clear", "Rain", "Clouds", "Snow"];
-  useEffect(() => {
-    setDummyCount((dummyCount + 1) % 4);
-    setWeather(weatherList[dummyCount]);
-  }, [selectedDate]);
+  let weatherUrl = `/weather?year=${selectedDate
+    .clone()
+    .format("YYYY")}&month=${selectedDate
+    .clone()
+    .format("MM")}&day=${selectedDate.clone().format("DD")}`;
+
+  useQuery<Weather>(
+    ["weather", selectedDate.format("YYYY MM DD")],
+    async () =>
+      await axios.get(weatherUrl).then((response) => {
+        let weather;
+        weather = response.data[0];
+        console.log("weather", weather);
+        setWeather(
+          weather
+            ? {
+                weather: weather.weather,
+                highestTmp: weather.highestTmp,
+                lowestTmp: weather.lowestTmp,
+              }
+            : { weather: "Clear", highestTmp: null, lowestTmp: null }
+        );
+        return response.data;
+      })
+  );
 
   return (
     <VideoPlayer
@@ -25,7 +45,10 @@ const WeatherPanel = () => {
       muted
       disabled
     >
-      <source type="video/mp4" src={`${WEATHER_BASEURL}/${weather}.mp4`} />
+      <source
+        type="video/mp4"
+        src={`${WEATHER_BASEURL}/${weather.weather}.mp4`}
+      />
     </VideoPlayer>
   );
 };
