@@ -1,6 +1,6 @@
-import {atom} from "recoil";
+import { atom } from "recoil";
 
 export const weatherState = atom({
   key: "weatherState",
-  default: "Clear",
+  default: { weather: "Clear", highestTmp: null, lowestTmp: null },
 });

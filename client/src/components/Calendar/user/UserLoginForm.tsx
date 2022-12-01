@@ -27,7 +27,7 @@ export function UserLoginForm(props: {
           )}
         </label>
         <input
-          value="add"
+          value="login"
           className="user_form_input self-center"
           type="submit"
         />

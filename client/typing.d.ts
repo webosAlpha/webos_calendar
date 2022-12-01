@@ -9,11 +9,10 @@ export interface Schedule {
   category: string;
   location: string;
   userId: string;
-  _id?: number;
+  _id?: string;
 }
 
 export interface Weather {
-  _id: number;
   year: string;
   month: string;
   day: string;
