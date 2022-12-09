@@ -238,5 +238,3 @@ const getSeveralSheetData =  async (sheetName) => {
 module.exports = {
 	getSheetData,
 };
-
-getSheetData();
