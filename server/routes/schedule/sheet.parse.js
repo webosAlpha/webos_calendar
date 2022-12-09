@@ -1,7 +1,7 @@
 // const Sheet = require("../../schemas/sheet");
 const axios = require("axios");
 
-const GOOGLE_SHEET_ID = "1QWitMUG4_drX0EOBurg0t4u5ZgCOuGti3ySf6Txkzs4";
+var GOOGLE_SHEET_ID = "1rk_O_ZGovMl0lT9jO-96dx7i3giJ_v5gcyMgnlMHYEg";
 let cnt = 1000;
 var month;
 var week;
@@ -17,12 +17,20 @@ var day = "";
 var dataArr;
 var jsonList = [];
 var weekOfYear;
+
 const moment = require("moment");
 let year = "2022";
 
-/*
-Url 파싱
-*/
+function parseKey(parseData, i) {
+	parseData = parseData.toString().split('{"v":"')[i];
+	parseData = parseData.split('"}')[0];
+	GOOGLE_SHEET_ID = parseData;
+	return parseData;
+}
+
+/**
+ * URL 파싱
+ */
 function parseUrl(data) {
 	var parseData = data.split('rows":[')[1];
 	parseData = parseData.split('}],"parsedNumHeaders')[0];
@@ -30,9 +38,9 @@ function parseUrl(data) {
 	return parseData;
 }
 
-/*
-월, 주차, 카테고리 파싱
-*/
+/**
+ * 월, 주차, 카테고리 파싱
+ */
 function parseMonthWeekCate(monthWeekCate) {
 	var jsonArr = JSON.parse(monthWeekCate);
 	var jsonObjVal = []; //jsonObj value 담을 배열
@@ -51,51 +59,57 @@ function parseMonthWeekCate(monthWeekCate) {
 	category = jsonObjVal[2];
 }
 
-// content(일정) 파싱
+/**
+ * content(일정) 파싱
+ */
 function parseSchedule(data) {
 	for (var i = 1; i < 8; i++) {
 		//요일별로 돌기
+		loopByTime();
+	}
+	makeJson();
+	makeJsonFile()
+	
+	function loopByTime() {
 		for (var j = 2; j < data.length; j++) {
-			//시간별로 돌기
 			dataArr = JSON.parse(data[j]); //data[j] 시간인덱스
-			if (
-				dataArr[i] != null &&
-				dataArr[i][Object.keys(dataArr[i])[0]] != null
-			) {
+			if (dataArr[i] != null &&
+				dataArr[i][Object.keys(dataArr[i])[0]] != null) {
 				content = dataArr[i][Object.keys(dataArr[i])[0]]; //dataArr[i] 요일인덱스
-				
-				if (content != beforeSchedule) {
-					//새로운 스케줄
-					if (startTime != "") {
-						makeJson();
-					}
-					beforeSchedule = content;
-					startTime = parseStartTime(dataArr);
-					endTime = parseEndTime(dataArr);
-					dayOfTheWeek = parseDayOfTheWeek(data, i);
-					
-				} else {
-					//이전과 동일 스케줄
-					endTime = parseEndTime(dataArr);
-				}
+				makeCase();
 			}
 		}
 	}
-	makeJson();
+
+	function makeCase() {
+		if (content != beforeSchedule) {
+			//새로운 스케줄
+			if (startTime != "") {
+				makeJson();
+			}
+			beforeSchedule = content;
+			startTime = parseStartTime(dataArr);
+			endTime = parseEndTime(dataArr);
+			dayOfTheWeek = parseDayOfTheWeek(data, i);
+		} else {
+			//이전과 동일 스케줄
+			endTime = parseEndTime(dataArr);
+		}
+	}
 }
 
-/*
-해당 스케줄의 요일 파싱
-*/
+/**
+ * 해당 스케줄의 요일 파싱
+ */
 function parseDayOfTheWeek(data, j) {
 	dayOfTheWeek = data[1].split('v":"')[j];
 	dayOfTheWeek = dayOfTheWeek.split('"}')[0];
 	return dayOfTheWeek;
 }
 
-/*
-해당 스케줄의 시작시간 파싱
-*/
+/**
+ * 해당 스케줄의 시작시간 파싱
+ */
 function parseStartTime(dataArr) {
 	startTime = JSON.stringify(dataArr[0]);
 	startTime = startTime.split('{"v":"')[1];
@@ -103,9 +117,9 @@ function parseStartTime(dataArr) {
 	return startTime;
 }
 
-/*
-해당 스케줄의 종료시간 파싱
-*/
+/**
+ * 해당 스케줄의 종료시간 파싱
+ */
 function parseEndTime(dataArr) {
 	endTime = JSON.stringify(dataArr[0]);
 	endTime = endTime.split("~")[1];
@@ -113,9 +127,9 @@ function parseEndTime(dataArr) {
 	return endTime;
 }
 
-/*
-json형태로 결합
-*/
+/**
+ * Json형태로 결합
+ */
 function makeJson() {
 	cnt += 1;
 	var year = "2022";
@@ -125,10 +139,10 @@ function makeJson() {
 		.startOf("week")
 		.day(dayConverter(dayOfTheWeek))
 		.format("DD");
+		
+	validateDate();
 	
 	var jsonSchedule = new Object();
-	
-	validateDate();
 
 	jsonSchedule._id = cnt;
 	jsonSchedule.content = beforeSchedule.split(", ")[0];
@@ -142,9 +156,11 @@ function makeJson() {
 	jsonSchedule.location = beforeSchedule.split(", ")[1];
 	jsonSchedule.user_id = 1;
 	jsonList.push(jsonSchedule);
-	makeJsonFile();
 }
 
+/**
+ * 월, 주차, 일 길이 유효성 검사
+ */
 function validateDate(){
 	if (month.length < 2) {
 		month = "0" + month;
@@ -157,14 +173,15 @@ function validateDate(){
 	}
 }
 
-/*
-json 파일 생성
-*/
+/**
+ * Json 파일 생성
+ */
 function makeJsonFile() {
 	const fs = require("fs");
 	const jdata = JSON.stringify(jsonList);
 	const jsdata = jdata.replace(/\\/g, "");
 	fs.writeFileSync("../../sheetData.json", jsdata);
+	
 }
 
 function dayConverter(dayOfWeek) {
@@ -192,10 +209,27 @@ const getSheetData = async (sheetName) => {
 			method: "get",
 			url: `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?sheet=${sheetName}`,
 		});
+		var lenKeys = data.toString().split('{"v":"').length - 1;
+		for (var i=1; i<lenKeys+1; i++){
+			parseKey(data, i);
+			getSeveralSheetData();
+		}
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const getSeveralSheetData =  async (sheetName) => {
+	try {
+		var { data } = await axios({
+			method: "get",
+			url: `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?sheet=${sheetName}`,
+		});
 		data = parseUrl(data);
 		monthWeekCate = data[0].split('{"c":')[1]; // 첫 행 파싱
 		parseMonthWeekCate(monthWeekCate);
 		parseSchedule(data);
+		
 	} catch (error) {
 		console.log(error);
 	}
@@ -204,3 +238,5 @@ const getSheetData = async (sheetName) => {
 module.exports = {
 	getSheetData,
 };
+
+getSheetData();
