@@ -1,3 +1,5 @@
+const weatherSchema = require("../../schemas/weather");
+
 global.fetch = require("node-fetch");
 
 const API_ID = "240c162cc0a3549b74f40b614fdd1d35";
@@ -88,20 +90,32 @@ function makeJson() {
 	jsonWeather.weather = weather;
 	jsonWeather.highestTmp = maxCelTemp;
 	jsonWeather.lowestTmp = minCelTemp;
-	jsonList.push(jsonWeather);
 
-	makeJsonFile();
+	saveJsonFile(jsonWeather);
+	// jsonList.push(jsonWeather);
+
+	// makeJsonFile();
 }
+
+saveJsonFile = async (obj) => {
+	const Weather = new weatherSchema(obj);
+	await weatherSchema.deleteMany({
+		year: Weather.year,
+		month: Weather.month,
+		day: Weather.day,
+	});
+	Weather.save();
+};
 
 /*
 json 파일 생성
 */
-function makeJsonFile() {
-	const fs = require("fs");
-	const jdata = JSON.stringify(jsonList);
-	const jsdata = jdata.replace(/\\/g, "");
-	fs.writeFileSync("weatherData.json", jsdata);
-}
+// function makeJsonFile() {
+// 	const fs = require("fs");
+// 	const jdata = JSON.stringify(jsonList);
+// 	const jsdata = jdata.replace(/\\/g, "");
+// 	fs.writeFileSync("weatherData.json", jsdata);
+// }
 
 function load() {
 	getWeather(37.4, 126.7);

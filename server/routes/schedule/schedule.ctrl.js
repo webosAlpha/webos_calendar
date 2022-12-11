@@ -1,7 +1,6 @@
 const Schedule = require("../../schemas/schedule");
 const parse = require("./sheet.parse");
 const sheetData = require("../../sheetData.json");
-const moment = require("moment");
 const { v1 } = require("uuid");
 
 const plzSchedule = async (req, res) => {
@@ -91,7 +90,7 @@ const insertData = async (req, res) => {
 
 const deleteData = async (req, res) => {
 	try {
-		await Board.remove({
+		await Schedule.deleteOne({
 			_id: req.body._id,
 		});
 		res.json({ message: "스케줄이 삭제되었습니다." });
