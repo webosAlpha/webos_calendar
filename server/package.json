@@ -16,6 +16,7 @@
 		"moment": "^2.29.4",
 		"mongoose": "^6.7.1",
 		"node-fetch": "^2.6.7",
+		"node-schedule": "^2.1.0",
 		"nodemon": "^2.0.20",
 		"uuid": "^9.0.0"
 	}
